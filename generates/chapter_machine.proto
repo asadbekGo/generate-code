@@ -6,20 +6,20 @@ option go_package="genproto/storehouse_service";
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 
-service Chapter_machineService {
-    rpc CreateChapter_machine(CreateChapter_machineRequest) returns (Chapter_machine) {}
-    rpc GetByIDChapter_machine(Chapter_machinePrimaryKey) returns (Chapter_machine) {}
-    rpc GetListChapter_machine(GetListChapter_machineRequest) returns (GetListChapter_machineResponse) {}
-    rpc UpdateChapter_machine(UpdateChapter_machineRequest) returns (Chapter_machine) {}
-    rpc UpdatePatchChapter_machine(UpdatePatchChapter_machineRequest) returns (Chapter_machine) {}
-    rpc DeleteChapter_machine(Chapter_machinePrimaryKey) returns (google.protobuf.Empty) {}
+service ChapterMachineService {
+    rpc CreateChapterMachine(CreateChapterMachineRequest) returns (ChapterMachine) {}
+    rpc GetByIDChapterMachine(ChapterMachinePrimaryKey) returns (ChapterMachine) {}
+    rpc GetListChapterMachine(GetListChapterMachineRequest) returns (GetListChapterMachineResponse) {}
+    rpc UpdateChapterMachine(UpdateChapterMachineRequest) returns (ChapterMachine) {}
+    rpc UpdatePatchChapterMachine(UpdatePatchChapterMachineRequest) returns (ChapterMachine) {}
+    rpc DeleteChapterMachine(ChapterMachinePrimaryKey) returns (google.protobuf.Empty) {}
 }
 
-message Chapter_machinePrimaryKey {
+message ChapterMachinePrimaryKey {
     string id = 1;
 }
 
-message Chapter_machine {
+message ChapterMachine {
     string id = 1;
     string name = 2;
     string branch_id = 3;
@@ -27,28 +27,28 @@ message Chapter_machine {
     string updated_at = 5;
 }
 
-message CreateChapter_machineRequest {
+message CreateChapterMachineRequest {
     string name = 1;
 }
 
-message UpdateChapter_machineRequest {
+message UpdateChapterMachineRequest {
     string id = 1;
     string name = 2;
     string branch_id = 3;
 }
 
-message UpdatePatchChapter_machineRequest {
+message UpdatePatchChapterMachineRequest {
     string id = 1;
     google.protobuf.Struct fields = 2;
 }
 
-message GetListChapter_machineRequest {
+message GetListChapterMachineRequest {
     int32 limit = 1;
     int32 offset = 2;
     string search = 3;
 }
 
-message GetListChapter_machineResponse {
+message GetListChapterMachineResponse {
     int32 count = 1;
-    repeated Chapter_machine chapter_machines = 2;
+    repeated ChapterMachine chapter_machines = 2;
 }

@@ -31,7 +31,8 @@ func MakeProtos(sqlBody []byte) error {
 
 	var (
 		templateProto      = string(templateProtoBody)
-		upperHeadTableName = strings.ToUpper(string(tableName[0])) + tableName[1:]
+		camelCaseText      = helper.SnakeToCamel(tableName)
+		upperHeadTableName = strings.ToUpper(string(camelCaseText[0])) + camelCaseText[1:]
 	)
 
 	templateProto = strings.ReplaceAll(templateProto, "message Template {}", GenerateProtoMessage(upperHeadTableName, fields))

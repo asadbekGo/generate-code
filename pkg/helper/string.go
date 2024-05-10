@@ -1,6 +1,8 @@
 package helper
 
-import "strings"
+import (
+	"strings"
+)
 
 func RemoveEmptyRows(input string) string {
 	// Split the input string into lines
@@ -55,4 +57,17 @@ func SQLToGoType(sqlType string) string {
 	default:
 		return "interface{}" // Fallback to interface{} for unknown types
 	}
+}
+
+func SnakeToCamel(s string) string {
+	// Split the string by underscores
+	parts := strings.Split(s, "_")
+
+	// Iterate through the parts and capitalize the first letter of each part except the first one
+	for i := 1; i < len(parts); i++ {
+		parts[i] = strings.Title(parts[i])
+	}
+
+	// Join the parts back together
+	return strings.Join(parts, "")
 }

@@ -6,20 +6,20 @@ option go_package="genproto/storehouse_service";
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 
-service Chapter_stockService {
-    rpc CreateChapter_stock(CreateChapter_stockRequest) returns (Chapter_stock) {}
-    rpc GetByIDChapter_stock(Chapter_stockPrimaryKey) returns (Chapter_stock) {}
-    rpc GetListChapter_stock(GetListChapter_stockRequest) returns (GetListChapter_stockResponse) {}
-    rpc UpdateChapter_stock(UpdateChapter_stockRequest) returns (Chapter_stock) {}
-    rpc UpdatePatchChapter_stock(UpdatePatchChapter_stockRequest) returns (Chapter_stock) {}
-    rpc DeleteChapter_stock(Chapter_stockPrimaryKey) returns (google.protobuf.Empty) {}
+service ChapterStockService {
+    rpc CreateChapterStock(CreateChapterStockRequest) returns (ChapterStock) {}
+    rpc GetByIDChapterStock(ChapterStockPrimaryKey) returns (ChapterStock) {}
+    rpc GetListChapterStock(GetListChapterStockRequest) returns (GetListChapterStockResponse) {}
+    rpc UpdateChapterStock(UpdateChapterStockRequest) returns (ChapterStock) {}
+    rpc UpdatePatchChapterStock(UpdatePatchChapterStockRequest) returns (ChapterStock) {}
+    rpc DeleteChapterStock(ChapterStockPrimaryKey) returns (google.protobuf.Empty) {}
 }
 
-message Chapter_stockPrimaryKey {
+message ChapterStockPrimaryKey {
     string id = 1;
 }
 
-message Chapter_stock {
+message ChapterStock {
     string id = 1;
     string name = 2;
     string branch_id = 3;
@@ -27,28 +27,28 @@ message Chapter_stock {
     string updated_at = 5;
 }
 
-message CreateChapter_stockRequest {
+message CreateChapterStockRequest {
     string name = 1;
 }
 
-message UpdateChapter_stockRequest {
+message UpdateChapterStockRequest {
     string id = 1;
     string name = 2;
     string branch_id = 3;
 }
 
-message UpdatePatchChapter_stockRequest {
+message UpdatePatchChapterStockRequest {
     string id = 1;
     google.protobuf.Struct fields = 2;
 }
 
-message GetListChapter_stockRequest {
+message GetListChapterStockRequest {
     int32 limit = 1;
     int32 offset = 2;
     string search = 3;
 }
 
-message GetListChapter_stockResponse {
+message GetListChapterStockResponse {
     int32 count = 1;
-    repeated Chapter_stock chapter_stocks = 2;
+    repeated ChapterStock chapter_stocks = 2;
 }

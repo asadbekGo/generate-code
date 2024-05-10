@@ -6,20 +6,20 @@ option go_package="genproto/storehouse_service";
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 
-service Request_productService {
-    rpc CreateRequest_product(CreateRequest_productRequest) returns (Request_product) {}
-    rpc GetByIDRequest_product(Request_productPrimaryKey) returns (Request_product) {}
-    rpc GetListRequest_product(GetListRequest_productRequest) returns (GetListRequest_productResponse) {}
-    rpc UpdateRequest_product(UpdateRequest_productRequest) returns (Request_product) {}
-    rpc UpdatePatchRequest_product(UpdatePatchRequest_productRequest) returns (Request_product) {}
-    rpc DeleteRequest_product(Request_productPrimaryKey) returns (google.protobuf.Empty) {}
+service RequestProductService {
+    rpc CreateRequestProduct(CreateRequestProductRequest) returns (RequestProduct) {}
+    rpc GetByIDRequestProduct(RequestProductPrimaryKey) returns (RequestProduct) {}
+    rpc GetListRequestProduct(GetListRequestProductRequest) returns (GetListRequestProductResponse) {}
+    rpc UpdateRequestProduct(UpdateRequestProductRequest) returns (RequestProduct) {}
+    rpc UpdatePatchRequestProduct(UpdatePatchRequestProductRequest) returns (RequestProduct) {}
+    rpc DeleteRequestProduct(RequestProductPrimaryKey) returns (google.protobuf.Empty) {}
 }
 
-message Request_productPrimaryKey {
+message RequestProductPrimaryKey {
     string id = 1;
 }
 
-message Request_product {
+message RequestProduct {
     string id = 1;
     int32 quantity = 2;
     string size_type = 3;
@@ -34,7 +34,7 @@ message Request_product {
     string updated_at = 12;
 }
 
-message CreateRequest_productRequest {
+message CreateRequestProductRequest {
     int32 quantity = 1;
     string size_type = 2;
     double size_value = 3;
@@ -43,7 +43,7 @@ message CreateRequest_productRequest {
     string status = 6;
 }
 
-message UpdateRequest_productRequest {
+message UpdateRequestProductRequest {
     string id = 1;
     int32 quantity = 2;
     string size_type = 3;
@@ -56,18 +56,18 @@ message UpdateRequest_productRequest {
     string request_id = 10;
 }
 
-message UpdatePatchRequest_productRequest {
+message UpdatePatchRequestProductRequest {
     string id = 1;
     google.protobuf.Struct fields = 2;
 }
 
-message GetListRequest_productRequest {
+message GetListRequestProductRequest {
     int32 limit = 1;
     int32 offset = 2;
     string search = 3;
 }
 
-message GetListRequest_productResponse {
+message GetListRequestProductResponse {
     int32 count = 1;
-    repeated Request_product request_products = 2;
+    repeated RequestProduct request_products = 2;
 }
