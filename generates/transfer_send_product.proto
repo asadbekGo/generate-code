@@ -1,0 +1,76 @@
+syntax="proto3";
+
+package storehouse_service;
+option go_package="genproto/storehouse_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service Transfer_send_productService {
+    rpc CreateTransfer_send_product(CreateTransfer_send_productRequest) returns (Transfer_send_product) {}
+    rpc GetByIDTransfer_send_product(Transfer_send_productPrimaryKey) returns (Transfer_send_product) {}
+    rpc GetListTransfer_send_product(GetListTransfer_send_productRequest) returns (GetListTransfer_send_productResponse) {}
+    rpc UpdateTransfer_send_product(UpdateTransfer_send_productRequest) returns (Transfer_send_product) {}
+    rpc UpdatePatchTransfer_send_product(UpdatePatchTransfer_send_productRequest) returns (Transfer_send_product) {}
+    rpc DeleteTransfer_send_product(Transfer_send_productPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message Transfer_send_productPrimaryKey {
+    string id = 1;
+}
+
+message Transfer_send_product {
+    string id = 1;
+    int32 quantity = 2;
+    string size_type = 3;
+    double size_value = 4;
+    string weight_type = 5;
+    double weight_value = 6;
+    string status = 7;
+    string branch_id = 8;
+    string branch_id_2 = 9;
+    string product_id = 10;
+    string transfer_send_id = 11;
+    string created_at = 12;
+    string updated_at = 13;
+}
+
+message CreateTransfer_send_productRequest {
+    int32 quantity = 1;
+    string size_type = 2;
+    double size_value = 3;
+    string weight_type = 4;
+    double weight_value = 5;
+    string status = 6;
+    string branch_id_2 = 7;
+}
+
+message UpdateTransfer_send_productRequest {
+    string id = 1;
+    int32 quantity = 2;
+    string size_type = 3;
+    double size_value = 4;
+    string weight_type = 5;
+    double weight_value = 6;
+    string status = 7;
+    string branch_id = 8;
+    string branch_id_2 = 9;
+    string product_id = 10;
+    string transfer_send_id = 11;
+}
+
+message UpdatePatchTransfer_send_productRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListTransfer_send_productRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+}
+
+message GetListTransfer_send_productResponse {
+    int32 count = 1;
+    repeated Transfer_send_product transfer_send_products = 2;
+}

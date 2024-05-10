@@ -1,0 +1,76 @@
+syntax="proto3";
+
+package storehouse_service;
+option go_package="genproto/storehouse_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service Write_offService {
+    rpc CreateWrite_off(CreateWrite_offRequest) returns (Write_off) {}
+    rpc GetByIDWrite_off(Write_offPrimaryKey) returns (Write_off) {}
+    rpc GetListWrite_off(GetListWrite_offRequest) returns (GetListWrite_offResponse) {}
+    rpc UpdateWrite_off(UpdateWrite_offRequest) returns (Write_off) {}
+    rpc UpdatePatchWrite_off(UpdatePatchWrite_offRequest) returns (Write_off) {}
+    rpc DeleteWrite_off(Write_offPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message Write_offPrimaryKey {
+    string id = 1;
+}
+
+message Write_off {
+    string id = 1;
+    int32 write_off_id = 2;
+    int32 quantity = 3;
+    string size_type = 4;
+    double size_value = 5;
+    string weight_type = 6;
+    double weight_value = 7;
+    string date_time = 8;
+    string product_id = 9;
+    string machine_id = 10;
+    string branch_id = 11;
+    string created_at = 12;
+    string updated_at = 13;
+}
+
+message CreateWrite_offRequest {
+    int32 write_off_id = 1;
+    int32 quantity = 2;
+    string size_type = 3;
+    double size_value = 4;
+    string weight_type = 5;
+    double weight_value = 6;
+    string date_time = 7;
+}
+
+message UpdateWrite_offRequest {
+    string id = 1;
+    int32 write_off_id = 2;
+    int32 quantity = 3;
+    string size_type = 4;
+    double size_value = 5;
+    string weight_type = 6;
+    double weight_value = 7;
+    string date_time = 8;
+    string product_id = 9;
+    string machine_id = 10;
+    string branch_id = 11;
+}
+
+message UpdatePatchWrite_offRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListWrite_offRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+}
+
+message GetListWrite_offResponse {
+    int32 count = 1;
+    repeated Write_off write_offs = 2;
+}

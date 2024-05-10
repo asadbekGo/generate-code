@@ -1,0 +1,65 @@
+syntax="proto3";
+
+package storehouse_service;
+option go_package="genproto/storehouse_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service MachineService {
+    rpc CreateMachine(CreateMachineRequest) returns (Machine) {}
+    rpc GetByIDMachine(MachinePrimaryKey) returns (Machine) {}
+    rpc GetListMachine(GetListMachineRequest) returns (GetListMachineResponse) {}
+    rpc UpdateMachine(UpdateMachineRequest) returns (Machine) {}
+    rpc UpdatePatchMachine(UpdatePatchMachineRequest) returns (Machine) {}
+    rpc DeleteMachine(MachinePrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message MachinePrimaryKey {
+    string id = 1;
+}
+
+message Machine {
+    string id = 1;
+    string name = 2;
+    int32 machine_id = 3;
+    string photo = 4;
+    string description = 5;
+    string branch_id = 6;
+    string chapter_machine_id = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message CreateMachineRequest {
+    string name = 1;
+    int32 machine_id = 2;
+    string photo = 3;
+    string description = 4;
+}
+
+message UpdateMachineRequest {
+    string id = 1;
+    string name = 2;
+    int32 machine_id = 3;
+    string photo = 4;
+    string description = 5;
+    string branch_id = 6;
+    string chapter_machine_id = 7;
+}
+
+message UpdatePatchMachineRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListMachineRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+}
+
+message GetListMachineResponse {
+    int32 count = 1;
+    repeated Machine machines = 2;
+}

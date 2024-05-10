@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package storehouse_service;
+option go_package="genproto/storehouse_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service Chapter_machineService {
+    rpc CreateChapter_machine(CreateChapter_machineRequest) returns (Chapter_machine) {}
+    rpc GetByIDChapter_machine(Chapter_machinePrimaryKey) returns (Chapter_machine) {}
+    rpc GetListChapter_machine(GetListChapter_machineRequest) returns (GetListChapter_machineResponse) {}
+    rpc UpdateChapter_machine(UpdateChapter_machineRequest) returns (Chapter_machine) {}
+    rpc UpdatePatchChapter_machine(UpdatePatchChapter_machineRequest) returns (Chapter_machine) {}
+    rpc DeleteChapter_machine(Chapter_machinePrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message Chapter_machinePrimaryKey {
+    string id = 1;
+}
+
+message Chapter_machine {
+    string id = 1;
+    string name = 2;
+    string branch_id = 3;
+    string created_at = 4;
+    string updated_at = 5;
+}
+
+message CreateChapter_machineRequest {
+    string name = 1;
+}
+
+message UpdateChapter_machineRequest {
+    string id = 1;
+    string name = 2;
+    string branch_id = 3;
+}
+
+message UpdatePatchChapter_machineRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListChapter_machineRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+}
+
+message GetListChapter_machineResponse {
+    int32 count = 1;
+    repeated Chapter_machine chapter_machines = 2;
+}
