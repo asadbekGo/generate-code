@@ -11,6 +11,10 @@ import (
 func MakeProtos(sqlBody []byte) error {
 
 	var sqlTable = helper.RemoveEmptyRows(string(sqlBody))
+	if len(sqlTable) <= 0 {
+		return nil
+	}
+
 	tableName, fields, err := helper.ParseSQLQuery(sqlTable)
 	if err != nil {
 		log.Println("Error while ParseSQLQuery:", err.Error())

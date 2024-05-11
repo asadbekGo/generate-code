@@ -11,7 +11,7 @@ func RemoveEmptyRows(input string) string {
 	// Filter out the empty lines
 	var nonEmptyLines []string
 	for _, line := range lines {
-		if strings.TrimSpace(line) != "" {
+		if strings.TrimSpace(line) != "" && !strings.Contains(line, "--") {
 			nonEmptyLines = append(nonEmptyLines, line)
 		}
 	}
