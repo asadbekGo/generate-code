@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS "branch" (
     "id" UUID NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
@@ -26,7 +27,6 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS "chapter_machine" (
     "id" UUID NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
-    "branch_id" UUID NOT NULL REFERENCES "branch"("id"),
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );
@@ -37,8 +37,18 @@ CREATE TABLE IF NOT EXISTS "machine" (
     "machine_id" NUMBER NOT NULL,
     "photo" VARCHAR(255),
     "description" TEXT,
-    "branch_id" UUID NOT NULL REFERENCES "branch"("id"),
     "chapter_machine_id" UUID NOT NULL REFERENCES "chapter_machine"("id"),
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "product" (
+    "id" UUID NOT NULL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
+    "photo" VARCHAR(255),
+    "description" TEXT,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );
@@ -51,10 +61,11 @@ CREATE TABLE IF NOT EXISTS "chapter_stock" (
     "updated_at" TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS "product" (
+CREATE TABLE IF NOT EXISTS "stock_product" (
     "id" UUID NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
-    "product_id" NUMBER NOT NULL,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
     "quantity" NUMBER NOT NULL,
     "photo" VARCHAR(255),
     "description" TEXT,
@@ -63,6 +74,7 @@ CREATE TABLE IF NOT EXISTS "product" (
     "weight_type" VARCHAR,
     "weight_value" DECIMAL,
     "branch_id" UUID NOT NULL REFERENCES "branch"("id"),
+    "product_id" UUID NOT NULL REFERENCES "product"("id"),
     "chapter_stock_id" UUID NOT NULL REFERENCES "chapter_stock"("id"),
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
@@ -71,6 +83,8 @@ CREATE TABLE IF NOT EXISTS "product" (
 CREATE TABLE IF NOT EXISTS "write_off" (
     "id" UUID NOT NULL PRIMARY KEY,
     "write_off_id" NUMBER NOT NULL,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
     "quantity" NUMBER NOT NULL,
     "size_type" VARCHAR NOT NULL,
     "size_value" DECIMAL NOT NULL DEFAULT 0,
@@ -78,7 +92,7 @@ CREATE TABLE IF NOT EXISTS "write_off" (
     "weight_value" DECIMAL NOT NULL DEFAULT 0,
     "date_time" TIMESTAMP NOT NULL,
     "product_id" UUID NOT NULL REFERENCES "product"("id"),
-    "machine_id" UUID NOT NULL REFERENCES "machine"("id"),
+    "machine_id" UUID REFERENCES "machine"("id"),
     "branch_id" UUID NOT NULL REFERENCES "branch"("id"),
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
@@ -100,6 +114,8 @@ CREATE TABLE IF NOT EXISTS "request" (
 
 CREATE TABLE IF NOT EXISTS "request_product" (
     "id" UUID NOT NULL PRIMARY KEY,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
     "quantity" NUMBER NOT NULL,
     "size_type" VARCHAR,
     "size_value" DECIMAL,
@@ -128,6 +144,8 @@ CREATE TABLE IF NOT EXISTS "transfer_send" (
 
 CREATE TABLE IF NOT EXISTS "transfer_send_product" (
     "id" UUID NOT NULL PRIMARY KEY,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
     "quantity" NUMBER NOT NULL,
     "size_type" VARCHAR,
     "size_value" DECIMAL,
@@ -157,6 +175,8 @@ CREATE TABLE IF NOT EXISTS "transfer_receive" (
 
 CREATE TABLE IF NOT EXISTS "transfer_receive_product" (
     "id" UUID NOT NULL PRIMARY KEY,
+    "barcode" VARCHAR,
+    "product_number" NUMBER NOT NULL,
     "quantity" NUMBER NOT NULL,
     "size_type" VARCHAR,
     "size_value" DECIMAL,

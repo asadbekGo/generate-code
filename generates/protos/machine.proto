@@ -25,10 +25,9 @@ message Machine {
     int32 machine_id = 3;
     string photo = 4;
     string description = 5;
-    string branch_id = 6;
-    string chapter_machine_id = 7;
-    string created_at = 8;
-    string updated_at = 9;
+    string chapter_machine_id = 6;
+    string created_at = 7;
+    string updated_at = 8;
 }
 
 message CreateMachineRequest {
@@ -44,8 +43,7 @@ message UpdateMachineRequest {
     int32 machine_id = 3;
     string photo = 4;
     string description = 5;
-    string branch_id = 6;
-    string chapter_machine_id = 7;
+    string chapter_machine_id = 6;
 }
 
 message UpdatePatchMachineRequest {

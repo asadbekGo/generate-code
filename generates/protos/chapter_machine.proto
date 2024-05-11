@@ -22,9 +22,8 @@ message ChapterMachinePrimaryKey {
 message ChapterMachine {
     string id = 1;
     string name = 2;
-    string branch_id = 3;
-    string created_at = 4;
-    string updated_at = 5;
+    string created_at = 3;
+    string updated_at = 4;
 }
 
 message CreateChapterMachineRequest {
@@ -34,7 +33,6 @@ message CreateChapterMachineRequest {
 message UpdateChapterMachineRequest {
     string id = 1;
     string name = 2;
-    string branch_id = 3;
 }
 
 message UpdatePatchChapterMachineRequest {

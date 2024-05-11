@@ -22,45 +22,29 @@ message ProductPrimaryKey {
 message Product {
     string id = 1;
     string name = 2;
-    int32 product_id = 3;
-    int32 quantity = 4;
+    string barcode = 3;
+    int32 product_number = 4;
     string photo = 5;
     string description = 6;
-    string size_type = 7;
-    double size_value = 8;
-    string weight_type = 9;
-    double weight_value = 10;
-    string branch_id = 11;
-    string chapter_stock_id = 12;
-    string created_at = 13;
-    string updated_at = 14;
+    string created_at = 7;
+    string updated_at = 8;
 }
 
 message CreateProductRequest {
     string name = 1;
-    int32 product_id = 2;
-    int32 quantity = 3;
+    string barcode = 2;
+    int32 product_number = 3;
     string photo = 4;
     string description = 5;
-    string size_type = 6;
-    double size_value = 7;
-    string weight_type = 8;
-    double weight_value = 9;
 }
 
 message UpdateProductRequest {
     string id = 1;
     string name = 2;
-    int32 product_id = 3;
-    int32 quantity = 4;
+    string barcode = 3;
+    int32 product_number = 4;
     string photo = 5;
     string description = 6;
-    string size_type = 7;
-    double size_value = 8;
-    string weight_type = 9;
-    double weight_value = 10;
-    string branch_id = 11;
-    string chapter_stock_id = 12;
 }
 
 message UpdatePatchProductRequest {

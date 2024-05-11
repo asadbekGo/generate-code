@@ -1,0 +1,85 @@
+syntax="proto3";
+
+package storehouse_service;
+option go_package="genproto/storehouse_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service StockProductService {
+    rpc CreateStockProduct(CreateStockProductRequest) returns (StockProduct) {}
+    rpc GetByIDStockProduct(StockProductPrimaryKey) returns (StockProduct) {}
+    rpc GetListStockProduct(GetListStockProductRequest) returns (GetListStockProductResponse) {}
+    rpc UpdateStockProduct(UpdateStockProductRequest) returns (StockProduct) {}
+    rpc UpdatePatchStockProduct(UpdatePatchStockProductRequest) returns (StockProduct) {}
+    rpc DeleteStockProduct(StockProductPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message StockProductPrimaryKey {
+    string id = 1;
+}
+
+message StockProduct {
+    string id = 1;
+    string name = 2;
+    string barcode = 3;
+    int32 product_number = 4;
+    int32 quantity = 5;
+    string photo = 6;
+    string description = 7;
+    string size_type = 8;
+    double size_value = 9;
+    string weight_type = 10;
+    double weight_value = 11;
+    string branch_id = 12;
+    string product_id = 13;
+    string chapter_stock_id = 14;
+    string created_at = 15;
+    string updated_at = 16;
+}
+
+message CreateStockProductRequest {
+    string name = 1;
+    string barcode = 2;
+    int32 product_number = 3;
+    int32 quantity = 4;
+    string photo = 5;
+    string description = 6;
+    string size_type = 7;
+    double size_value = 8;
+    string weight_type = 9;
+    double weight_value = 10;
+}
+
+message UpdateStockProductRequest {
+    string id = 1;
+    string name = 2;
+    string barcode = 3;
+    int32 product_number = 4;
+    int32 quantity = 5;
+    string photo = 6;
+    string description = 7;
+    string size_type = 8;
+    double size_value = 9;
+    string weight_type = 10;
+    double weight_value = 11;
+    string branch_id = 12;
+    string product_id = 13;
+    string chapter_stock_id = 14;
+}
+
+message UpdatePatchStockProductRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListStockProductRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+    string search = 3;
+}
+
+message GetListStockProductResponse {
+    int32 count = 1;
+    repeated StockProduct stock_products = 2;
+}

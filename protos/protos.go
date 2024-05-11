@@ -56,7 +56,7 @@ func MakeProtos(sqlBody []byte) error {
 	templateProto = strings.ReplaceAll(templateProto, "Template", upperHeadTableName)
 	templateProto = strings.ReplaceAll(templateProto, "templates", helper.Pluralize(tableName))
 
-	err = helper.WriteFile("./generates/"+tableName+".proto", templateProto)
+	err = helper.WriteFile("./generates/protos/"+tableName+".proto", templateProto)
 	if err != nil {
 		log.Println("Error while WriteFile:", err.Error())
 		return err
