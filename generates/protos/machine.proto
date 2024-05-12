@@ -35,6 +35,7 @@ message CreateMachineRequest {
     int32 machine_id = 2;
     string photo = 3;
     string description = 4;
+    string chapter_machine_id = 5;
 }
 
 message UpdateMachineRequest {

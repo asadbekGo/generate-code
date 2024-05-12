@@ -46,7 +46,7 @@ func MakeProtos(sqlBody []byte) error {
 		updateFields []string
 	)
 	for _, field := range fields {
-		if !strings.Contains(field, "id:string") && !strings.Contains(field, "created_at:string") && !strings.Contains(field, "updated_at:string") {
+		if field != "id:string" && !strings.Contains(field, "created_at:string") && !strings.Contains(field, "updated_at:string") {
 			createFields = append(createFields, field)
 		}
 

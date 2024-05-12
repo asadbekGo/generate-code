@@ -46,7 +46,10 @@ message CreateTransferReceiveProductRequest {
     string weight_type = 6;
     double weight_value = 7;
     string status = 8;
-    string branch_id_2 = 9;
+    string branch_id = 9;
+    string branch_id_2 = 10;
+    string product_id = 11;
+    string transfer_send_id = 12;
 }
 
 message UpdateTransferReceiveProductRequest {

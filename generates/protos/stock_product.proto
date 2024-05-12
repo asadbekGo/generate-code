@@ -49,6 +49,9 @@ message CreateStockProductRequest {
     double size_value = 8;
     string weight_type = 9;
     double weight_value = 10;
+    string branch_id = 11;
+    string product_id = 12;
+    string chapter_stock_id = 13;
 }
 
 message UpdateStockProductRequest {

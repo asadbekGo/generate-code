@@ -43,6 +43,7 @@ message CreateUserRequest {
     string photo = 6;
     string type = 7;
     string status = 8;
+    string branch_id = 9;
 }
 
 message UpdateUserRequest {

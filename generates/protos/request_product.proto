@@ -45,6 +45,9 @@ message CreateRequestProductRequest {
     string weight_type = 6;
     double weight_value = 7;
     string status = 8;
+    string branch_id = 9;
+    string product_id = 10;
+    string request_id = 11;
 }
 
 message UpdateRequestProductRequest {

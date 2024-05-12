@@ -47,6 +47,9 @@ message CreateWriteOffRequest {
     string weight_type = 7;
     double weight_value = 8;
     string date_time = 9;
+    string product_id = 10;
+    string machine_id = 11;
+    string branch_id = 12;
 }
 
 message UpdateWriteOffRequest {

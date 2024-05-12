@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"fmt"
 	"log"
 	"strings"
 
@@ -26,8 +25,27 @@ func MakeStorage(sqlBody []byte) error {
 		fields[index] = fieldType[0] + ":" + helper.SQLToGoType(fieldType[1])
 	}
 
-	fmt.Println("tableName:", tableName)
-	fmt.Println("fields:", fields)
+	var templateGoFilename = "./storage/template_service.txt"
+	templateGoBody, err := helper.ReadFile(templateGoFilename)
+	if err != nil {
+		log.Println("Error while ReadFile:", err.Error())
+		return err
+	}
+
+	var (
+		templateGo         = string(templateGoBody)
+		camelCaseText      = helper.SnakeToCamel(tableName)
+		upperHeadTableName = strings.ToUpper(string(camelCaseText[0])) + camelCaseText[1:]
+	)
+
+	templateGo = strings.ReplaceAll(templateGo, "Template", upperHeadTableName)
+	templateGo = strings.ReplaceAll(templateGo, "template", tableName)
+
+	err = helper.WriteFile("generates/service/"+tableName+".go", templateGo)
+	if err != nil {
+		log.Println("Error while WriteFile:", err.Error())
+		return err
+	}
 
 	return nil
 }

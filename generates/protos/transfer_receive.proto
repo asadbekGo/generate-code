@@ -36,8 +36,10 @@ message CreateTransferReceiveRequest {
     string date_time = 1;
     string description = 2;
     string comments = 3;
-    string user_id_2 = 4;
-    string branch_id_2 = 5;
+    string user_id = 4;
+    string user_id_2 = 5;
+    string branch_id = 6;
+    string branch_id_2 = 7;
 }
 
 message UpdateTransferReceiveRequest {

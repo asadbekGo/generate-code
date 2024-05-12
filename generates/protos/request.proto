@@ -37,9 +37,11 @@ message CreateRequestRequest {
     string date_time = 1;
     string description = 2;
     string comments = 3;
-    string user_id_2 = 4;
-    string status = 5;
-    string chapter_status = 6;
+    string user_id = 4;
+    string user_id_2 = 5;
+    string branch_id = 6;
+    string status = 7;
+    string chapter_status = 8;
 }
 
 message UpdateRequestRequest {

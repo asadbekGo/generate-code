@@ -29,6 +29,7 @@ message ChapterStock {
 
 message CreateChapterStockRequest {
     string name = 1;
+    string branch_id = 2;
 }
 
 message UpdateChapterStockRequest {
