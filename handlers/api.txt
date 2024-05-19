@@ -1,0 +1,6 @@
+// Template ..
+r.POST("/template", h.CreateTemplate)
+r.GET("/template/:template_id", h.GetSingleTemplate)
+r.GET("/template", h.GetTemplateList)
+r.PUT("/template", h.UpdateTemplate)
+r.DELETE("/template/:template_id", h.DeleteTemplate)
