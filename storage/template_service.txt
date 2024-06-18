@@ -1,4 +1,4 @@
-package service
+package supplier_service
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"warehouse/warehouse_go_storehouse_service/config"
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
 	"warehouse/warehouse_go_storehouse_service/grpc/client"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/logger"
@@ -21,7 +21,7 @@ type TemplateService struct {
 	log      logger.LoggerI
 	strg     storage.StorageI
 	services client.ServiceManagerI
-	storehouse_service.UnimplementedTemplateServiceServer
+	storehouse_supplier_service.UnimplementedTemplateServiceServer
 }
 
 func NewTemplateService(cfg config.Config, log logger.LoggerI, strg storage.StorageI, srvs client.ServiceManagerI) *TemplateService {
@@ -33,7 +33,7 @@ func NewTemplateService(cfg config.Config, log logger.LoggerI, strg storage.Stor
 	}
 }
 
-func (i *TemplateService) CreateTemplate(ctx context.Context, req *storehouse_service.CreateTemplateRequest) (resp *storehouse_service.Template, err error) {
+func (i *TemplateService) CreateTemplate(ctx context.Context, req *storehouse_supplier_service.CreateTemplateRequest) (resp *storehouse_supplier_service.Template, err error) {
 
 	i.log.Info("---CreateTemplate------>", logger.Any("req", req))
 
@@ -52,7 +52,7 @@ func (i *TemplateService) CreateTemplate(ctx context.Context, req *storehouse_se
 	return
 }
 
-func (i *TemplateService) GetByIDTemplate(ctx context.Context, req *storehouse_service.TemplatePrimaryKey) (resp *storehouse_service.Template, err error) {
+func (i *TemplateService) GetByIDTemplate(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) (resp *storehouse_supplier_service.Template, err error) {
 
 	i.log.Info("---GetByIDTemplate------>", logger.Any("req", req))
 
@@ -65,7 +65,7 @@ func (i *TemplateService) GetByIDTemplate(ctx context.Context, req *storehouse_s
 	return
 }
 
-func (i *TemplateService) GetListTemplate(ctx context.Context, req *storehouse_service.GetListTemplateRequest) (resp *storehouse_service.GetListTemplateResponse, err error) {
+func (i *TemplateService) GetListTemplate(ctx context.Context, req *storehouse_supplier_service.GetListTemplateRequest) (resp *storehouse_supplier_service.GetListTemplateResponse, err error) {
 
 	i.log.Info("---GetListTemplate------>", logger.Any("req", req))
 
@@ -78,7 +78,7 @@ func (i *TemplateService) GetListTemplate(ctx context.Context, req *storehouse_s
 	return
 }
 
-func (i *TemplateService) UpdateTemplate(ctx context.Context, req *storehouse_service.UpdateTemplateRequest) (resp *storehouse_service.Template, err error) {
+func (i *TemplateService) UpdateTemplate(ctx context.Context, req *storehouse_supplier_service.UpdateTemplateRequest) (resp *storehouse_supplier_service.Template, err error) {
 
 	i.log.Info("---UpdateTemplate------>", logger.Any("req", req))
 
@@ -93,7 +93,7 @@ func (i *TemplateService) UpdateTemplate(ctx context.Context, req *storehouse_se
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Template().GetByPKey(ctx, &storehouse_service.TemplatePrimaryKey{Id: req.Id})
+	resp, err = i.strg.Template().GetByPKey(ctx, &storehouse_supplier_service.TemplatePrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdateTemplate--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -102,7 +102,7 @@ func (i *TemplateService) UpdateTemplate(ctx context.Context, req *storehouse_se
 	return resp, err
 }
 
-func (i *TemplateService) UpdatePatchTemplate(ctx context.Context, req *storehouse_service.UpdatePatchTemplateRequest) (resp *storehouse_service.Template, err error) {
+func (i *TemplateService) UpdatePatchTemplate(ctx context.Context, req *storehouse_supplier_service.UpdatePatchTemplateRequest) (resp *storehouse_supplier_service.Template, err error) {
 
 	i.log.Info("---UpdatePatchEnrolledStudent------>", logger.Any("req", req))
 	updatePatchModel := models.UpdatePatchRequest{
@@ -121,7 +121,7 @@ func (i *TemplateService) UpdatePatchTemplate(ctx context.Context, req *storehou
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Template().GetByPKey(ctx, &storehouse_service.TemplatePrimaryKey{Id: req.Id})
+	resp, err = i.strg.Template().GetByPKey(ctx, &storehouse_supplier_service.TemplatePrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdatePatchOrder--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -130,7 +130,7 @@ func (i *TemplateService) UpdatePatchTemplate(ctx context.Context, req *storehou
 	return resp, err
 }
 
-func (i *TemplateService) DeleteTemplate(ctx context.Context, req *storehouse_service.TemplatePrimaryKey) (resp *empty.Empty, err error) {
+func (i *TemplateService) DeleteTemplate(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) (resp *empty.Empty, err error) {
 
 	i.log.Info("---DeleteTemplate------>", logger.Any("req", req))
 

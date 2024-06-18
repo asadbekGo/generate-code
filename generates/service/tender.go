@@ -1,4 +1,4 @@
-package service
+package supplier_service
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"warehouse/warehouse_go_storehouse_service/config"
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
 	"warehouse/warehouse_go_storehouse_service/grpc/client"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/logger"
@@ -21,7 +21,7 @@ type TenderService struct {
 	log      logger.LoggerI
 	strg     storage.StorageI
 	services client.ServiceManagerI
-	storehouse_service.UnimplementedTenderServiceServer
+	storehouse_supplier_service.UnimplementedTenderServiceServer
 }
 
 func NewTenderService(cfg config.Config, log logger.LoggerI, strg storage.StorageI, srvs client.ServiceManagerI) *TenderService {
@@ -33,7 +33,7 @@ func NewTenderService(cfg config.Config, log logger.LoggerI, strg storage.Storag
 	}
 }
 
-func (i *TenderService) CreateTender(ctx context.Context, req *storehouse_service.CreateTenderRequest) (resp *storehouse_service.Tender, err error) {
+func (i *TenderService) CreateTender(ctx context.Context, req *storehouse_supplier_service.CreateTenderRequest) (resp *storehouse_supplier_service.Tender, err error) {
 
 	i.log.Info("---CreateTender------>", logger.Any("req", req))
 
@@ -52,7 +52,7 @@ func (i *TenderService) CreateTender(ctx context.Context, req *storehouse_servic
 	return
 }
 
-func (i *TenderService) GetByIDTender(ctx context.Context, req *storehouse_service.TenderPrimaryKey) (resp *storehouse_service.Tender, err error) {
+func (i *TenderService) GetByIDTender(ctx context.Context, req *storehouse_supplier_service.TenderPrimaryKey) (resp *storehouse_supplier_service.Tender, err error) {
 
 	i.log.Info("---GetByIDTender------>", logger.Any("req", req))
 
@@ -65,7 +65,7 @@ func (i *TenderService) GetByIDTender(ctx context.Context, req *storehouse_servi
 	return
 }
 
-func (i *TenderService) GetListTender(ctx context.Context, req *storehouse_service.GetListTenderRequest) (resp *storehouse_service.GetListTenderResponse, err error) {
+func (i *TenderService) GetListTender(ctx context.Context, req *storehouse_supplier_service.GetListTenderRequest) (resp *storehouse_supplier_service.GetListTenderResponse, err error) {
 
 	i.log.Info("---GetListTender------>", logger.Any("req", req))
 
@@ -78,7 +78,7 @@ func (i *TenderService) GetListTender(ctx context.Context, req *storehouse_servi
 	return
 }
 
-func (i *TenderService) UpdateTender(ctx context.Context, req *storehouse_service.UpdateTenderRequest) (resp *storehouse_service.Tender, err error) {
+func (i *TenderService) UpdateTender(ctx context.Context, req *storehouse_supplier_service.UpdateTenderRequest) (resp *storehouse_supplier_service.Tender, err error) {
 
 	i.log.Info("---UpdateTender------>", logger.Any("req", req))
 
@@ -93,7 +93,7 @@ func (i *TenderService) UpdateTender(ctx context.Context, req *storehouse_servic
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Tender().GetByPKey(ctx, &storehouse_service.TenderPrimaryKey{Id: req.Id})
+	resp, err = i.strg.Tender().GetByPKey(ctx, &storehouse_supplier_service.TenderPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdateTender--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -102,7 +102,7 @@ func (i *TenderService) UpdateTender(ctx context.Context, req *storehouse_servic
 	return resp, err
 }
 
-func (i *TenderService) UpdatePatchTender(ctx context.Context, req *storehouse_service.UpdatePatchTenderRequest) (resp *storehouse_service.Tender, err error) {
+func (i *TenderService) UpdatePatchTender(ctx context.Context, req *storehouse_supplier_service.UpdatePatchTenderRequest) (resp *storehouse_supplier_service.Tender, err error) {
 
 	i.log.Info("---UpdatePatchEnrolledStudent------>", logger.Any("req", req))
 	updatePatchModel := models.UpdatePatchRequest{
@@ -121,7 +121,7 @@ func (i *TenderService) UpdatePatchTender(ctx context.Context, req *storehouse_s
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Tender().GetByPKey(ctx, &storehouse_service.TenderPrimaryKey{Id: req.Id})
+	resp, err = i.strg.Tender().GetByPKey(ctx, &storehouse_supplier_service.TenderPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdatePatchOrder--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -130,7 +130,7 @@ func (i *TenderService) UpdatePatchTender(ctx context.Context, req *storehouse_s
 	return resp, err
 }
 
-func (i *TenderService) DeleteTender(ctx context.Context, req *storehouse_service.TenderPrimaryKey) (resp *empty.Empty, err error) {
+func (i *TenderService) DeleteTender(ctx context.Context, req *storehouse_supplier_service.TenderPrimaryKey) (resp *empty.Empty, err error) {
 
 	i.log.Info("---DeleteTender------>", logger.Any("req", req))
 

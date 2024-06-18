@@ -89,16 +89,16 @@ func (c *SupplierRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_s
 	`
 
 	var (
-		id        sql.NullString
-	firstName sql.NullString
-	lastName sql.NullString
-	birthday sql.NullString
-	balance sql.NullString
-	currency sql.NullString
-	phoneNumber sql.NullString
-	address sql.NullString
-		createdAt sql.NullString
-		updatedAt sql.NullString
+		id          sql.NullString
+		firstName   sql.NullString
+		lastName    sql.NullString
+		birthday    sql.NullString
+		balance     sql.NullString
+		currency    sql.NullString
+		phoneNumber sql.NullString
+		address     sql.NullString
+		createdAt   sql.NullString
+		updatedAt   sql.NullString
 	)
 
 	err = c.db.QueryRow(ctx, query, req.Id).Scan(
@@ -119,16 +119,16 @@ func (c *SupplierRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_s
 	}
 
 	resp = &storehouse_supplier_service.Supplier{
-		Id:        id.String,
-		FirstName: firstName.String,
-		LastName: lastName.String,
-		Birthday: birthday.String,
-		Balance: balance.String,
-		Currency: currency.String,
+		Id:          id.String,
+		FirstName:   firstName.String,
+		LastName:    lastName.String,
+		Birthday:    birthday.String,
+		Balance:     balance.String,
+		Currency:    currency.String,
 		PhoneNumber: phoneNumber.String,
-		Address: address.String,
-		CreatedAt: createdAt.String,
-		UpdatedAt: updatedAt.String,
+		Address:     address.String,
+		CreatedAt:   createdAt.String,
+		UpdatedAt:   updatedAt.String,
 	}
 
 	return
@@ -203,28 +203,28 @@ func (c *SupplierRepo) GetAll(ctx context.Context, req *storehouse_supplier_serv
 
 	for rows.Next() {
 		var (
-			id        sql.NullString
-	firstName sql.NullString
-	lastName sql.NullString
-	birthday sql.NullString
-	balance sql.NullString
-	currency sql.NullString
-	phoneNumber sql.NullString
-	address sql.NullString
-			createdAt sql.NullString
-			updatedAt sql.NullString
+			id          sql.NullString
+			firstName   sql.NullString
+			lastName    sql.NullString
+			birthday    sql.NullString
+			balance     sql.NullString
+			currency    sql.NullString
+			phoneNumber sql.NullString
+			address     sql.NullString
+			createdAt   sql.NullString
+			updatedAt   sql.NullString
 		)
 
 		err := rows.Scan(
 			&resp.Count,
 			&id,
-		&firstName,
-		&lastName,
-		&birthday,
-		&balance,
-		&currency,
-		&phoneNumber,
-		&address,
+			&firstName,
+			&lastName,
+			&birthday,
+			&balance,
+			&currency,
+			&phoneNumber,
+			&address,
 			&createdAt,
 			&updatedAt,
 		)
@@ -234,16 +234,16 @@ func (c *SupplierRepo) GetAll(ctx context.Context, req *storehouse_supplier_serv
 		}
 
 		resp.Suppliers = append(resp.Suppliers, &storehouse_supplier_service.Supplier{
-			Id:        id.String,
-		FirstName: firstName.String,
-		LastName: lastName.String,
-		Birthday: birthday.String,
-		Balance: balance.String,
-		Currency: currency.String,
-		PhoneNumber: phoneNumber.String,
-		Address: address.String,
-			CreatedAt: createdAt.String,
-			UpdatedAt: updatedAt.String,
+			Id:          id.String,
+			FirstName:   firstName.String,
+			LastName:    lastName.String,
+			Birthday:    birthday.String,
+			Balance:     balance.String,
+			Currency:    currency.String,
+			PhoneNumber: phoneNumber.String,
+			Address:     address.String,
+			CreatedAt:   createdAt.String,
+			UpdatedAt:   updatedAt.String,
 		})
 	}
 
@@ -276,14 +276,14 @@ func (c *SupplierRepo) Update(ctx context.Context, req *storehouse_supplier_serv
 			id = :id
 	`
 	params = map[string]interface{}{
-		"id":   req.GetId(),
-		"first_name": req.GetFirstName(),
-		"last_name": req.GetLastName(),
-		"birthday": req.GetBirthday(),
-		"balance": req.GetBalance(),
-		"currency": req.GetCurrency(),
+		"id":           req.GetId(),
+		"first_name":   req.GetFirstName(),
+		"last_name":    req.GetLastName(),
+		"birthday":     req.GetBirthday(),
+		"balance":      req.GetBalance(),
+		"currency":     req.GetCurrency(),
 		"phone_number": req.GetPhoneNumber(),
-		"address": req.GetAddress(),
+		"address":      req.GetAddress(),
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)

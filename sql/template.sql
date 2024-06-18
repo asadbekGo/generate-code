@@ -1,12 +1,9 @@
-CREATE TABLE IF NOT EXISTS "supplier" (
+CREATE TABLE IF NOT EXISTS "tender" (
     "id" UUID NOT NULL PRIMARY KEY,
-    "first_name" VARCHAR(255) NOT NULL,
-    "last_name" VARCHAR(255) NOT NULL,
-    "birthday" DATE NOT NULL,
-    "balance" DECIMAL NOT NULL,
-    "currency" VARCHAR(255) NOT NULL DEFAULT 'UZS',
-    "phone_number" VARCHAR(255) NOT NULL,
-    "address" VARCHAR(255),
+    "name" VARCHAR(255) NOT NULL,
+    "tender_number" VARCHAR NOT NULL,
+    "date_time" TIMESTAMP NOT NULL,
+    "status" status_tender DEFAULT 'comes',
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
