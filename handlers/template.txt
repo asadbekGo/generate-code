@@ -14,7 +14,7 @@ import (
 // CreateTemplate godoc
 // @Security ApiKeyAuth
 // @ID create_template
-// @Router /template [POST]
+// @Router /v1/template [POST]
 // @Summary Create Template
 // @Description Create Template
 // @Tags Template
@@ -48,7 +48,7 @@ func (h *Handler) CreateTemplate(c *gin.Context) {
 // GetSingleTemplate godoc
 // @Security ApiKeyAuth
 // @ID get_template_by_id
-// @Router /template/{template_id} [GET]
+// @Router /v1/template/{template_id} [GET]
 // @Summary Get single Template
 // @Description Get single Template
 // @Tags Template
@@ -86,7 +86,7 @@ func (h *Handler) GetSingleTemplate(c *gin.Context) {
 // GetTemplateList godoc
 // @Security ApiKeyAuth
 // @ID get_template_list
-// @Router /template [GET]
+// @Router /v1/template [GET]
 // @Summary Get Template list
 // @Description Get Template list
 // @Tags Template
@@ -130,7 +130,7 @@ func (h *Handler) GetTemplateList(c *gin.Context) {
 // UpdateTemplate godoc
 // @Security ApiKeyAuth
 // @ID update_template
-// @Router /template [PUT]
+// @Router /v1/template [PUT]
 // @Summary Update Template
 // @Description Update Template
 // @Tags Template
@@ -165,7 +165,7 @@ func (h *Handler) UpdateTemplate(c *gin.Context) {
 // DeleteTemplate godoc
 // @Security ApiKeyAuth
 // @ID delete_template
-// @Router /template/{template_id} [DELETE]
+// @Router /v1/template/{template_id} [DELETE]
 // @Summary Delete Template
 // @Description Delete Template
 // @Tags Template

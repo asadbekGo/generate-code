@@ -1,0 +1,72 @@
+syntax="proto3";
+
+package storehouse_supplier_service;
+option go_package="genproto/storehouse_supplier_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service SupplierService {
+    rpc CreateSupplier(CreateSupplierRequest) returns (Supplier) {}
+    rpc GetByIDSupplier(SupplierPrimaryKey) returns (Supplier) {}
+    rpc GetListSupplier(GetListSupplierRequest) returns (GetListSupplierResponse) {}
+    rpc UpdateSupplier(UpdateSupplierRequest) returns (Supplier) {}
+    rpc UpdatePatchSupplier(UpdatePatchSupplierRequest) returns (Supplier) {}
+    rpc DeleteSupplier(SupplierPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message SupplierPrimaryKey {
+    string id = 1;
+}
+
+message Supplier {
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string birthday = 4;
+    double balance = 5;
+    string currency = 6;
+    string phone_number = 7;
+    string address = 8;
+    string created_at = 9;
+    string updated_at = 10;
+}
+
+message CreateSupplierRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string birthday = 3;
+    double balance = 4;
+    string currency = 5;
+    string phone_number = 6;
+    string address = 7;
+}
+
+message UpdateSupplierRequest {
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string birthday = 4;
+    double balance = 5;
+    string currency = 6;
+    string phone_number = 7;
+    string address = 8;
+}
+
+message UpdatePatchSupplierRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListSupplierRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListSupplierResponse {
+    int32 count = 1;
+    repeated Supplier suppliers = 2;
+}
