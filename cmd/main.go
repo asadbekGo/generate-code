@@ -53,4 +53,10 @@ func main() {
 		return
 	}
 
+	err = storage.MakeStorageRepo()
+	if err != nil {
+		log.Println("Error while MakeStorageRepo:", err.Error())
+		return
+	}
+
 }

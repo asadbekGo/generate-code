@@ -1,0 +1,90 @@
+syntax="proto3";
+
+package storehouse_supplier_service;
+option go_package="genproto/storehouse_supplier_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service CashierRequestProductService {
+    rpc CreateCashierRequestProduct(CreateCashierRequestProductRequest) returns (CashierRequestProduct) {}
+    rpc GetByIDCashierRequestProduct(CashierRequestProductPrimaryKey) returns (CashierRequestProduct) {}
+    rpc GetListCashierRequestProduct(GetListCashierRequestProductRequest) returns (GetListCashierRequestProductResponse) {}
+    rpc UpdateCashierRequestProduct(UpdateCashierRequestProductRequest) returns (CashierRequestProduct) {}
+    rpc UpdatePatchCashierRequestProduct(UpdatePatchCashierRequestProductRequest) returns (CashierRequestProduct) {}
+    rpc DeleteCashierRequestProduct(CashierRequestProductPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CashierRequestProductPrimaryKey {
+    string id = 1;
+}
+
+message CashierRequestProduct {
+    string id = 1;
+    string barcode = 2;
+    string product_number = 3;
+    int64 quantity = 4;
+    string quantity_type = 5;
+    string size_type = 6;
+    double size_value = 7;
+    string weight_type = 8;
+    double weight_value = 9;
+    double price = 10;
+    string metrics = 11;
+    string status = 12;
+    string product_id = 13;
+    string cashier_request = 14;
+    string created_at = 15;
+    string updated_at = 16;
+}
+
+message CreateCashierRequestProductRequest {
+    string barcode = 1;
+    string product_number = 2;
+    int64 quantity = 3;
+    string quantity_type = 4;
+    string size_type = 5;
+    double size_value = 6;
+    string weight_type = 7;
+    double weight_value = 8;
+    double price = 9;
+    string metrics = 10;
+    string status = 11;
+    string product_id = 12;
+    string cashier_request = 13;
+}
+
+message UpdateCashierRequestProductRequest {
+    string id = 1;
+    string barcode = 2;
+    string product_number = 3;
+    int64 quantity = 4;
+    string quantity_type = 5;
+    string size_type = 6;
+    double size_value = 7;
+    string weight_type = 8;
+    double weight_value = 9;
+    double price = 10;
+    string metrics = 11;
+    string status = 12;
+    string product_id = 13;
+    string cashier_request = 14;
+}
+
+message UpdatePatchCashierRequestProductRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListCashierRequestProductRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListCashierRequestProductResponse {
+    int32 count = 1;
+    repeated CashierRequestProduct cashier_request_products = 2;
+}

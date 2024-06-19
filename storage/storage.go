@@ -8,6 +8,8 @@ import (
 	"githubc.com/asadbekGo/generate-code/pkg/helper"
 )
 
+var storageRepoTexts string
+
 func MakeService(sqlBody []byte) error {
 
 	var sqlTable = helper.RemoveEmptyRows(string(sqlBody))
@@ -101,6 +103,17 @@ func MakeStorage(sqlBody []byte) error {
 		return err
 	}
 
+	var storageRepoFilename = "./storage/storage.txt"
+	storageRepoBody, err := helper.ReadFile(storageRepoFilename)
+	if err != nil {
+		log.Println("Error while ReadFile:", err.Error())
+		return err
+	}
+	var storageRepo = string(storageRepoBody)
+
+	storageRepo = strings.ReplaceAll(storageRepo, "Template", upperHeadTableName)
+	storageRepoTexts += storageRepo + "\n"
+
 	return nil
 }
 
@@ -159,6 +172,17 @@ func generateQuery(tableName string, fields []string) Query {
 		VarScan:         varScan,
 		ResponseStruct:  responseStruct,
 	}
+}
+
+func MakeStorageRepo() error {
+
+	err := helper.WriteFile("./generates/storage/storage.go", storageRepoTexts)
+	if err != nil {
+		log.Println("Error while WriteFile:", err.Error())
+		return err
+	}
+
+	return nil
 }
 
 type Query struct {

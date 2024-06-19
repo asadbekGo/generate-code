@@ -1,4 +1,4 @@
-package handlers
+package storehouse_supplier_handler
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"warehouse/warehouse_go_api_gateway/api/status_http"
-	"warehouse/warehouse_go_api_gateway/genproto/storehouse_service"
+	"warehouse/warehouse_go_api_gateway/genproto/storehouse_supplier_service"
 	"warehouse/warehouse_go_api_gateway/pkg/util"
 )
 
@@ -20,20 +20,20 @@ import (
 // @Tags TenderSupplier
 // @Accept json
 // @Produce json
-// @Param TenderSupplier body storehouse_service.CreateTenderSupplierRequest true "CreateTenderSupplierRequestBody"
-// @Success 201 {object} status_http.Response{data=storehouse_service.TenderSupplier} "TenderSupplier data"
+// @Param TenderSupplier body storehouse_supplier_service.CreateTenderSupplierRequest true "CreateTenderSupplierRequestBody"
+// @Success 201 {object} status_http.Response{data=storehouse_supplier_service.TenderSupplier} "TenderSupplier data"
 // @Response 400 {object} status_http.Response{data=string} "Bad Request"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) CreateTenderSupplier(c *gin.Context) {
 
-	var tenderSupplier storehouse_service.CreateTenderSupplierRequest
+	var tenderSupplier storehouse_supplier_service.CreateTenderSupplierRequest
 	err := c.ShouldBindJSON(&tenderSupplier)
 	if err != nil {
 		h.HandleResponse(c, status_http.BadRequest, err.Error())
 		return
 	}
 
-	response, err := h.services.StorehouseService().TenderSupplier().CreateTenderSupplier(
+	response, err := h.services.StorehouseSupplierService().TenderSupplier().CreateTenderSupplier(
 		context.Background(),
 		&tenderSupplier,
 	)
@@ -55,7 +55,7 @@ func (h *Handler) CreateTenderSupplier(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param tender_supplier_id path string true "tender_supplier_id"
-// @Success 200 {object} status_http.Response{data=storehouse_service.TenderSupplier} "TenderSupplierBody"
+// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.TenderSupplier} "TenderSupplierBody"
 // @Response 400 {object} status_http.Response{data=string} "Invalid Argument"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) GetSingleTenderSupplier(c *gin.Context) {
@@ -66,9 +66,9 @@ func (h *Handler) GetSingleTenderSupplier(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseService().TenderSupplier().GetByIDTenderSupplier(
+	response, err := h.services.StorehouseSupplierService().TenderSupplier().GetByIDTenderSupplier(
 		context.Background(),
-		&storehouse_service.TenderSupplierPrimaryKey{Id: tenderSupplierId},
+		&storehouse_supplier_service.TenderSupplierPrimaryKey{Id: tenderSupplierId},
 	)
 	if response == nil {
 		err := errors.New("not Found")
@@ -92,17 +92,18 @@ func (h *Handler) GetSingleTenderSupplier(c *gin.Context) {
 // @Tags TenderSupplier
 // @Accept json
 // @Produce json
-// @Param filters query storehouse_service.GetListTenderSupplierRequest true "filters"
-// @Success 200 {object} status_http.Response{data=storehouse_service.GetListTenderSupplierResponse} "TenderSupplierBody"
+// @Param filters query storehouse_supplier_service.GetListTenderSupplierRequest true "filters"
+// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.GetListTenderSupplierResponse} "TenderSupplierBody"
 // @Response 400 {object} status_http.Response{data=string} "Invalid Argument"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) GetTenderSupplierList(c *gin.Context) {
 
-	offset, err := h.GetOffsetParam(c)
+	page, err := h.GetPageParam(c)
 	if err != nil {
 		h.HandleResponse(c, status_http.InvalidArgument, err.Error())
 		return
 	}
+
 
 	limit, err := h.GetLimitParam(c)
 	if err != nil {
@@ -110,11 +111,11 @@ func (h *Handler) GetTenderSupplierList(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseService().TenderSupplier().GetListTenderSupplier(
+	response, err := h.services.StorehouseSupplierService().TenderSupplier().GetListTenderSupplier(
 		context.Background(),
-		&storehouse_service.GetListTenderSupplierRequest{
+		&storehouse_supplier_service.GetListTenderSupplierRequest{
 			Limit:  int32(limit),
-			Offset: int32(offset),
+			Page:   int32(page),
 			Search: c.Query("search"),
 		},
 	)
@@ -136,20 +137,20 @@ func (h *Handler) GetTenderSupplierList(c *gin.Context) {
 // @Tags TenderSupplier
 // @Accept json
 // @Produce json
-// @Param TenderSupplier body storehouse_service.UpdateTenderSupplierRequest true "UpdateTenderSupplierRequestBody"
-// @Success 200 {object} status_http.Response{data=storehouse_service.TenderSupplier} "TenderSupplier data"
+// @Param TenderSupplier body storehouse_supplier_service.UpdateTenderSupplierRequest true "UpdateTenderSupplierRequestBody"
+// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.TenderSupplier} "TenderSupplier data"
 // @Response 400 {object} status_http.Response{data=string} "Bad Request"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) UpdateTenderSupplier(c *gin.Context) {
 
-	var updateTenderSupplier storehouse_service.UpdateTenderSupplierRequest
+	var updateTenderSupplier storehouse_supplier_service.UpdateTenderSupplierRequest
 	err := c.ShouldBindJSON(&updateTenderSupplier)
 	if err != nil {
 		h.HandleResponse(c, status_http.BadRequest, err.Error())
 		return
 	}
 
-	response, err := h.services.StorehouseService().TenderSupplier().UpdateTenderSupplier(
+	response, err := h.services.StorehouseSupplierService().TenderSupplier().UpdateTenderSupplier(
 		context.Background(),
 		&updateTenderSupplier,
 	)
@@ -183,9 +184,9 @@ func (h *Handler) DeleteTenderSupplier(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseService().TenderSupplier().DeleteTenderSupplier(
+	response, err := h.services.StorehouseSupplierService().TenderSupplier().DeleteTenderSupplier(
 		context.Background(),
-		&storehouse_service.TenderSupplierPrimaryKey{Id: tenderSupplierId},
+		&storehouse_supplier_service.TenderSupplierPrimaryKey{Id: tenderSupplierId},
 	)
 
 	if err != nil {

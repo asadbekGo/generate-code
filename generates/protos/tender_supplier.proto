@@ -1,7 +1,7 @@
 syntax="proto3";
 
-package storehouse_service;
-option go_package="genproto/storehouse_service";
+package storehouse_supplier_service;
+option go_package="genproto/storehouse_supplier_service";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
@@ -63,8 +63,10 @@ message UpdatePatchTenderSupplierRequest {
 
 message GetListTenderSupplierRequest {
     int32 limit = 1;
-    int32 offset = 2;
+    int32 page = 2;
     string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
 }
 
 message GetListTenderSupplierResponse {

@@ -1,7 +1,14 @@
-// Tender ..
-v1.POST("/tender", s.HandlerSupplier.CreateTender)
-v1.GET("/tender/:tender_id", s.HandlerSupplier.GetSingleTender)
-v1.GET("/tender", s.HandlerSupplier.GetTenderList)
-v1.PUT("/tender", s.HandlerSupplier.UpdateTender)
-v1.DELETE("/tender/:tender_id", s.HandlerSupplier.DeleteTender)
+// CashierRequest ..
+v1.POST("/cashier-request", s.HandlerSupplier.CreateCashierRequest)
+v1.GET("/cashier-request/:cashier_request_id", s.HandlerSupplier.GetSingleCashierRequest)
+v1.GET("/cashier-request", s.HandlerSupplier.GetCashierRequestList)
+v1.PUT("/cashier-request", s.HandlerSupplier.UpdateCashierRequest)
+v1.DELETE("/cashier-request/:cashier_request_id", s.HandlerSupplier.DeleteCashierRequest)
+
+// CashierRequestProduct ..
+v1.POST("/cashier-request-product", s.HandlerSupplier.CreateCashierRequestProduct)
+v1.GET("/cashier-request-product/:cashier_request_product_id", s.HandlerSupplier.GetSingleCashierRequestProduct)
+v1.GET("/cashier-request-product", s.HandlerSupplier.GetCashierRequestProductList)
+v1.PUT("/cashier-request-product", s.HandlerSupplier.UpdateCashierRequestProduct)
+v1.DELETE("/cashier-request-product/:cashier_request_product_id", s.HandlerSupplier.DeleteCashierRequestProduct)
 

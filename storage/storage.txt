@@ -1,8 +1,8 @@
-type BranchRepoI interface {
-	Create(ctx context.Context, req *storehouse_service.CreateBranchRequest) (resp *storehouse_service.BranchPrimaryKey, err error)
-	GetByPKey(ctx context.Context, req *storehouse_service.BranchPrimaryKey) (resp *storehouse_service.Branch, err error)
-	GetAll(ctx context.Context, req *storehouse_service.GetListBranchRequest) (resp *storehouse_service.GetListBranchResponse, err error)
-	Update(ctx context.Context, req *storehouse_service.UpdateBranchRequest) (rowsAffected int64, err error)
+type TemplateRepoI interface {
+	Create(ctx context.Context, req *storehouse_supplier_service.CreateTemplateRequest) (resp *storehouse_supplier_service.TemplatePrimaryKey, err error)
+	GetByPKey(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) (resp *storehouse_supplier_service.Template, err error)
+	GetAll(ctx context.Context, req *storehouse_supplier_service.GetListTemplateRequest) (resp *storehouse_supplier_service.GetListTemplateResponse, err error)
+	Update(ctx context.Context, req *storehouse_supplier_service.UpdateTemplateRequest) (rowsAffected int64, err error)
 	UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error)
-	Delete(ctx context.Context, req *storehouse_service.BranchPrimaryKey) error
+	Delete(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) error
 }

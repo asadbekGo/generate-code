@@ -1,4 +1,4 @@
-package service
+package supplier_service
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"warehouse/warehouse_go_storehouse_service/config"
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
 	"warehouse/warehouse_go_storehouse_service/grpc/client"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/logger"
@@ -21,7 +21,7 @@ type TenderSupplierService struct {
 	log      logger.LoggerI
 	strg     storage.StorageI
 	services client.ServiceManagerI
-	storehouse_service.UnimplementedTenderSupplierServiceServer
+	storehouse_supplier_service.UnimplementedTenderSupplierServiceServer
 }
 
 func NewTenderSupplierService(cfg config.Config, log logger.LoggerI, strg storage.StorageI, srvs client.ServiceManagerI) *TenderSupplierService {
@@ -33,7 +33,7 @@ func NewTenderSupplierService(cfg config.Config, log logger.LoggerI, strg storag
 	}
 }
 
-func (i *TenderSupplierService) CreateTenderSupplier(ctx context.Context, req *storehouse_service.CreateTenderSupplierRequest) (resp *storehouse_service.TenderSupplier, err error) {
+func (i *TenderSupplierService) CreateTenderSupplier(ctx context.Context, req *storehouse_supplier_service.CreateTenderSupplierRequest) (resp *storehouse_supplier_service.TenderSupplier, err error) {
 
 	i.log.Info("---CreateTenderSupplier------>", logger.Any("req", req))
 
@@ -52,7 +52,7 @@ func (i *TenderSupplierService) CreateTenderSupplier(ctx context.Context, req *s
 	return
 }
 
-func (i *TenderSupplierService) GetByIDTenderSupplier(ctx context.Context, req *storehouse_service.TenderSupplierPrimaryKey) (resp *storehouse_service.TenderSupplier, err error) {
+func (i *TenderSupplierService) GetByIDTenderSupplier(ctx context.Context, req *storehouse_supplier_service.TenderSupplierPrimaryKey) (resp *storehouse_supplier_service.TenderSupplier, err error) {
 
 	i.log.Info("---GetByIDTenderSupplier------>", logger.Any("req", req))
 
@@ -65,7 +65,7 @@ func (i *TenderSupplierService) GetByIDTenderSupplier(ctx context.Context, req *
 	return
 }
 
-func (i *TenderSupplierService) GetListTenderSupplier(ctx context.Context, req *storehouse_service.GetListTenderSupplierRequest) (resp *storehouse_service.GetListTenderSupplierResponse, err error) {
+func (i *TenderSupplierService) GetListTenderSupplier(ctx context.Context, req *storehouse_supplier_service.GetListTenderSupplierRequest) (resp *storehouse_supplier_service.GetListTenderSupplierResponse, err error) {
 
 	i.log.Info("---GetListTenderSupplier------>", logger.Any("req", req))
 
@@ -78,7 +78,7 @@ func (i *TenderSupplierService) GetListTenderSupplier(ctx context.Context, req *
 	return
 }
 
-func (i *TenderSupplierService) UpdateTenderSupplier(ctx context.Context, req *storehouse_service.UpdateTenderSupplierRequest) (resp *storehouse_service.TenderSupplier, err error) {
+func (i *TenderSupplierService) UpdateTenderSupplier(ctx context.Context, req *storehouse_supplier_service.UpdateTenderSupplierRequest) (resp *storehouse_supplier_service.TenderSupplier, err error) {
 
 	i.log.Info("---UpdateTenderSupplier------>", logger.Any("req", req))
 
@@ -93,7 +93,7 @@ func (i *TenderSupplierService) UpdateTenderSupplier(ctx context.Context, req *s
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.TenderSupplier().GetByPKey(ctx, &storehouse_service.TenderSupplierPrimaryKey{Id: req.Id})
+	resp, err = i.strg.TenderSupplier().GetByPKey(ctx, &storehouse_supplier_service.TenderSupplierPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdateTenderSupplier--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -102,7 +102,7 @@ func (i *TenderSupplierService) UpdateTenderSupplier(ctx context.Context, req *s
 	return resp, err
 }
 
-func (i *TenderSupplierService) UpdatePatchTenderSupplier(ctx context.Context, req *storehouse_service.UpdatePatchTenderSupplierRequest) (resp *storehouse_service.TenderSupplier, err error) {
+func (i *TenderSupplierService) UpdatePatchTenderSupplier(ctx context.Context, req *storehouse_supplier_service.UpdatePatchTenderSupplierRequest) (resp *storehouse_supplier_service.TenderSupplier, err error) {
 
 	i.log.Info("---UpdatePatchEnrolledStudent------>", logger.Any("req", req))
 	updatePatchModel := models.UpdatePatchRequest{
@@ -121,7 +121,7 @@ func (i *TenderSupplierService) UpdatePatchTenderSupplier(ctx context.Context, r
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.TenderSupplier().GetByPKey(ctx, &storehouse_service.TenderSupplierPrimaryKey{Id: req.Id})
+	resp, err = i.strg.TenderSupplier().GetByPKey(ctx, &storehouse_supplier_service.TenderSupplierPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!UpdatePatchOrder--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -130,7 +130,7 @@ func (i *TenderSupplierService) UpdatePatchTenderSupplier(ctx context.Context, r
 	return resp, err
 }
 
-func (i *TenderSupplierService) DeleteTenderSupplier(ctx context.Context, req *storehouse_service.TenderSupplierPrimaryKey) (resp *empty.Empty, err error) {
+func (i *TenderSupplierService) DeleteTenderSupplier(ctx context.Context, req *storehouse_supplier_service.TenderSupplierPrimaryKey) (resp *empty.Empty, err error) {
 
 	i.log.Info("---DeleteTenderSupplier------>", logger.Any("req", req))
 
