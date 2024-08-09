@@ -1,32 +1,29 @@
-CREATE TABLE IF NOT EXISTS "cashier_request" (
+
+CREATE TABLE IF NOT EXISTS "client" (
     "id" UUID NOT NULL PRIMARY KEY,
-    "cashier_request_number" VARCHAR NOT NULL,
-    "term_payment" term_payment_type NOT NULL DEFAULT 'one-time',
-    "term_amount" VARCHAR(255) NOT NULL,
+    "first_name" VARCHAR(255) NOT NULL,
+    "last_name" VARCHAR(255) NOT NULL,
+    "birthday" DATE NOT NULL,
+    "balance" DECIMAL NOT NULL,
     "currency" VARCHAR(255) NOT NULL DEFAULT 'UZS',
+    "phone_number" VARCHAR(255) NOT NULL,
+    "address" VARCHAR(255),
+    "status" status_type DEFAULT 'ACTIVE',
     "description" TEXT,
-    "file" VARCHAR(255),
-    "supplier_id" UUID NOT NULL REFERENCES "supplier"("id"),
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-CREATE TABLE IF NOT EXISTS "cashier_request_product" (
+CREATE TABLE IF NOT EXISTS "client_contract" (
     "id" UUID NOT NULL PRIMARY KEY,
-    "barcode" VARCHAR,
-    "product_number" VARCHAR NOT NULL,
-    "quantity" BIGINT NOT NULL DEFAULT 0,
-    "quantity_type" VARCHAR,
-    "size_type" VARCHAR,
-    "size_value" DECIMAL,
-    "weight_type" VARCHAR,
-    "weight_value" DECIMAL,
-    "price" DECIMAL,
-    "metrics" VARCHAR(255) NOT NULL DEFAULT 'ШТ',
-    "status" status_enum DEFAULT 'not_viewed',
-    "product_id" UUID NOT NULL REFERENCES "product"("id"),
-    "cashier_request" UUID NOT NULL REFERENCES "cashier_request"("id"),
+    "from_date" DATE NOT NULL,
+    "to_date" DATE NOT NULL,
+    "total_amount" DECIMAL NOT NULL,
+    "file" VARCHAR(255),
+    "description" TEXT,
+    "client_id" UUID NOT NULL REFERENCES "client"("id"),
+    "cashier_request_id" UUID NOT NULL REFERENCES "cashier_request"("id"),
+    "status" contract_status DEFAULT 'no_completed',
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );

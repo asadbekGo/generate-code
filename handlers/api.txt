@@ -1,6 +1,6 @@
 // Template ..
-v1.POST("/template", s.HandlerSupplier.CreateTemplate)
-v1.GET("/template/:template_id", s.HandlerSupplier.GetSingleTemplate)
-v1.GET("/template", s.HandlerSupplier.GetTemplateList)
-v1.PUT("/template", s.HandlerSupplier.UpdateTemplate)
-v1.DELETE("/template/:template_id", s.HandlerSupplier.DeleteTemplate)
+v1.POST("/template", s.HandlerClient.CreateTemplate)
+v1.GET("/template/:template_id", s.HandlerClient.GetSingleTemplate)
+v1.GET("/template", s.HandlerClient.GetTemplateList)
+v1.PUT("/template", s.HandlerClient.UpdateTemplate)
+v1.DELETE("/template/:template_id", s.HandlerClient.DeleteTemplate)

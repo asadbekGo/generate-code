@@ -1,4 +1,4 @@
-package supplier_storage
+package client_storage
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/opentracing/opentracing-go"
 
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_client_service"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/helper"
 	"warehouse/warehouse_go_storehouse_service/storage"
@@ -26,7 +26,7 @@ func NewTemplateRepo(db *pgxpool.Pool) storage.TemplateRepoI {
 	}
 }
 
-func (c *TemplateRepo) Create(ctx context.Context, req *storehouse_supplier_service.CreateTemplateRequest) (resp *storehouse_supplier_service.TemplatePrimaryKey, err error) {
+func (c *TemplateRepo) Create(ctx context.Context, req *storehouse_client_service.CreateTemplateRequest) (resp *storehouse_client_service.TemplatePrimaryKey, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Create")
 	defer dbSpan.Finish()
@@ -47,10 +47,10 @@ insertExecField
 		return nil, err
 	}
 
-	return &storehouse_supplier_service.TemplatePrimaryKey{Id: id.String()}, nil
+	return &storehouse_client_service.TemplatePrimaryKey{Id: id.String()}, nil
 }
 
-func (c *TemplateRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) (resp *storehouse_supplier_service.Template, err error) {
+func (c *TemplateRepo) GetByPKey(ctx context.Context, req *storehouse_client_service.TemplatePrimaryKey) (resp *storehouse_client_service.Template, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetByPKey")
 	defer dbSpan.Finish()
@@ -82,7 +82,7 @@ varScan
 		return resp, err
 	}
 
-	resp = &storehouse_supplier_service.Template{
+	resp = &storehouse_client_service.Template{
 		Id:        id.String,
 responseStruct
 		CreatedAt: createdAt.String,
@@ -92,12 +92,12 @@ responseStruct
 	return
 }
 
-func (c *TemplateRepo) GetAll(ctx context.Context, req *storehouse_supplier_service.GetListTemplateRequest) (resp *storehouse_supplier_service.GetListTemplateResponse, err error) {
+func (c *TemplateRepo) GetAll(ctx context.Context, req *storehouse_client_service.GetListTemplateRequest) (resp *storehouse_client_service.GetListTemplateResponse, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetAll")
 	defer dbSpan.Finish()
 
-	resp = &storehouse_supplier_service.GetListTemplateResponse{}
+	resp = &storehouse_client_service.GetListTemplateResponse{}
 
 	var (
 		query  string
@@ -172,7 +172,7 @@ varScan
 			return resp, err
 		}
 
-		resp.Templates = append(resp.Templates, &storehouse_supplier_service.Template{
+		resp.Templates = append(resp.Templates, &storehouse_client_service.Template{
 			Id:        id.String,
 responseStruct
 			CreatedAt: createdAt.String,
@@ -183,7 +183,7 @@ responseStruct
 	return
 }
 
-func (c *TemplateRepo) Update(ctx context.Context, req *storehouse_supplier_service.UpdateTemplateRequest) (rowsAffected int64, err error) {
+func (c *TemplateRepo) Update(ctx context.Context, req *storehouse_client_service.UpdateTemplateRequest) (rowsAffected int64, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Update")
 	defer dbSpan.Finish()
@@ -261,7 +261,7 @@ func (c *TemplateRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchR
 	return result.RowsAffected(), err
 }
 
-func (c *TemplateRepo) Delete(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) error {
+func (c *TemplateRepo) Delete(ctx context.Context, req *storehouse_client_service.TemplatePrimaryKey) error {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Delete")
 	defer dbSpan.Finish()

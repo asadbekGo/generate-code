@@ -1,4 +1,4 @@
-package supplier_storage
+package client_storage
 
 import (
 	"context"
@@ -10,23 +10,23 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/opentracing/opentracing-go"
 
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_client_service"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/helper"
 	"warehouse/warehouse_go_storehouse_service/storage"
 )
 
-type CashierRequestRepo struct {
+type ClientRepo struct {
 	db *pgxpool.Pool
 }
 
-func NewCashierRequestRepo(db *pgxpool.Pool) storage.CashierRequestRepoI {
-	return &CashierRequestRepo{
+func NewClientRepo(db *pgxpool.Pool) storage.ClientRepoI {
+	return &ClientRepo{
 		db: db,
 	}
 }
 
-func (c *CashierRequestRepo) Create(ctx context.Context, req *storehouse_supplier_service.CreateCashierRequestRequest) (resp *storehouse_supplier_service.CashierRequestPrimaryKey, err error) {
+func (c *ClientRepo) Create(ctx context.Context, req *storehouse_client_service.CreateClientRequest) (resp *storehouse_client_service.ClientPrimaryKey, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Create")
 	defer dbSpan.Finish()
@@ -34,40 +34,44 @@ func (c *CashierRequestRepo) Create(ctx context.Context, req *storehouse_supplie
 	var id = uuid.New()
 
 	query := `
-		INSERT INTO "cashier_request" (
+		INSERT INTO "client" (
 			id,
-			cashier_request_number,
-			term_payment,
-			term_amount,
+			first_name,
+			last_name,
+			birthday,
+			balance,
 			currency,
+			phone_number,
+			address,
+			status,
 			description,
-			file,
-			supplier_id,
 			updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now())
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, now())
 	`
 
 	_, err = c.db.Exec(ctx,
 		query,
 		id,
-		req.GetCashierRequestNumber(),
-		req.GetTermPayment(),
-		req.GetTermAmount(),
+		req.GetFirstName(),
+		req.GetLastName(),
+		req.GetBirthday(),
+		req.GetBalance(),
 		req.GetCurrency(),
+		req.GetPhoneNumber(),
+		req.GetAddress(),
+		req.GetStatus(),
 		req.GetDescription(),
-		req.GetFile(),
-		req.GetSupplierId(),
 	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &storehouse_supplier_service.CashierRequestPrimaryKey{Id: id.String()}, nil
+	return &storehouse_client_service.ClientPrimaryKey{Id: id.String()}, nil
 }
 
-func (c *CashierRequestRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_service.CashierRequestPrimaryKey) (resp *storehouse_supplier_service.CashierRequest, err error) {
+func (c *ClientRepo) GetByPKey(ctx context.Context, req *storehouse_client_service.ClientPrimaryKey) (resp *storehouse_client_service.Client, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetByPKey")
 	defer dbSpan.Finish()
@@ -75,41 +79,47 @@ func (c *CashierRequestRepo) GetByPKey(ctx context.Context, req *storehouse_supp
 	query := `
 		SELECT
 			id,
-			cashier_request_number,
-			term_payment,
-			term_amount,
+			first_name,
+			last_name,
+			birthday,
+			balance,
 			currency,
+			phone_number,
+			address,
+			status,
 			description,
-			file,
-			supplier_id,
 			TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS'),
 			TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS')
-		FROM "cashier_request"
+		FROM "client"
 		WHERE id = $1
 	`
 
 	var (
 		id        sql.NullString
-	cashierRequestNumber sql.NullString
-	termPayment sql.NullString
-	termAmount sql.NullString
+	firstName sql.NullString
+	lastName sql.NullString
+	birthday sql.NullString
+	balance sql.NullString
 	currency sql.NullString
+	phoneNumber sql.NullString
+	address sql.NullString
+	status sql.NullString
 	description sql.NullString
-	file sql.NullString
-	supplierId sql.NullString
 		createdAt sql.NullString
 		updatedAt sql.NullString
 	)
 
 	err = c.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
-		&cashierRequestNumber,
-		&termPayment,
-		&termAmount,
+		&firstName,
+		&lastName,
+		&birthday,
+		&balance,
 		&currency,
+		&phoneNumber,
+		&address,
+		&status,
 		&description,
-		&file,
-		&supplierId,
 		&createdAt,
 		&updatedAt,
 	)
@@ -118,15 +128,17 @@ func (c *CashierRequestRepo) GetByPKey(ctx context.Context, req *storehouse_supp
 		return resp, err
 	}
 
-	resp = &storehouse_supplier_service.CashierRequest{
+	resp = &storehouse_client_service.Client{
 		Id:        id.String,
-		CashierRequestNumber: cashierRequestNumber.String,
-		TermPayment: termPayment.String,
-		TermAmount: termAmount.String,
+		FirstName: firstName.String,
+		LastName: lastName.String,
+		Birthday: birthday.String,
+		Balance: balance.String,
 		Currency: currency.String,
+		PhoneNumber: phoneNumber.String,
+		Address: address.String,
+		Status: status.String,
 		Description: description.String,
-		File: file.String,
-		SupplierId: supplierId.String,
 		CreatedAt: createdAt.String,
 		UpdatedAt: updatedAt.String,
 	}
@@ -134,12 +146,12 @@ func (c *CashierRequestRepo) GetByPKey(ctx context.Context, req *storehouse_supp
 	return
 }
 
-func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplier_service.GetListCashierRequestRequest) (resp *storehouse_supplier_service.GetListCashierRequestResponse, err error) {
+func (c *ClientRepo) GetAll(ctx context.Context, req *storehouse_client_service.GetListClientRequest) (resp *storehouse_client_service.GetListClientResponse, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetAll")
 	defer dbSpan.Finish()
 
-	resp = &storehouse_supplier_service.GetListCashierRequestResponse{}
+	resp = &storehouse_client_service.GetListClientResponse{}
 
 	var (
 		query  string
@@ -154,16 +166,18 @@ func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplie
 		SELECT
 			COUNT(*) OVER(),
 			id,
-			cashier_request_number,
-			term_payment,
-			term_amount,
+			first_name,
+			last_name,
+			birthday,
+			balance,
 			currency,
+			phone_number,
+			address,
+			status,
 			description,
-			file,
-			supplier_id,
 			TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS'),
 			TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS')
-		FROM "cashier_request"
+		FROM "client"
 	`
 
 	if req.GetLimit() > 0 {
@@ -204,13 +218,15 @@ func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplie
 	for rows.Next() {
 		var (
 			id        sql.NullString
-	cashierRequestNumber sql.NullString
-	termPayment sql.NullString
-	termAmount sql.NullString
+	firstName sql.NullString
+	lastName sql.NullString
+	birthday sql.NullString
+	balance sql.NullString
 	currency sql.NullString
+	phoneNumber sql.NullString
+	address sql.NullString
+	status sql.NullString
 	description sql.NullString
-	file sql.NullString
-	supplierId sql.NullString
 			createdAt sql.NullString
 			updatedAt sql.NullString
 		)
@@ -218,13 +234,15 @@ func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplie
 		err := rows.Scan(
 			&resp.Count,
 			&id,
-		&cashierRequestNumber,
-		&termPayment,
-		&termAmount,
+		&firstName,
+		&lastName,
+		&birthday,
+		&balance,
 		&currency,
+		&phoneNumber,
+		&address,
+		&status,
 		&description,
-		&file,
-		&supplierId,
 			&createdAt,
 			&updatedAt,
 		)
@@ -233,15 +251,17 @@ func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplie
 			return resp, err
 		}
 
-		resp.CashierRequests = append(resp.CashierRequests, &storehouse_supplier_service.CashierRequest{
+		resp.Clients = append(resp.Clients, &storehouse_client_service.Client{
 			Id:        id.String,
-		CashierRequestNumber: cashierRequestNumber.String,
-		TermPayment: termPayment.String,
-		TermAmount: termAmount.String,
+		FirstName: firstName.String,
+		LastName: lastName.String,
+		Birthday: birthday.String,
+		Balance: balance.String,
 		Currency: currency.String,
+		PhoneNumber: phoneNumber.String,
+		Address: address.String,
+		Status: status.String,
 		Description: description.String,
-		File: file.String,
-		SupplierId: supplierId.String,
 			CreatedAt: createdAt.String,
 			UpdatedAt: updatedAt.String,
 		})
@@ -250,7 +270,7 @@ func (c *CashierRequestRepo) GetAll(ctx context.Context, req *storehouse_supplie
 	return
 }
 
-func (c *CashierRequestRepo) Update(ctx context.Context, req *storehouse_supplier_service.UpdateCashierRequestRequest) (rowsAffected int64, err error) {
+func (c *ClientRepo) Update(ctx context.Context, req *storehouse_client_service.UpdateClientRequest) (rowsAffected int64, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Update")
 	defer dbSpan.Finish()
@@ -262,28 +282,32 @@ func (c *CashierRequestRepo) Update(ctx context.Context, req *storehouse_supplie
 
 	query = `
 		UPDATE 
-			"cashier_request"
+			"client"
 		SET
-			cashier_request_number = :cashier_request_number,
-			term_payment = :term_payment,
-			term_amount = :term_amount,
+			first_name = :first_name,
+			last_name = :last_name,
+			birthday = :birthday,
+			balance = :balance,
 			currency = :currency,
+			phone_number = :phone_number,
+			address = :address,
+			status = :status,
 			description = :description,
-			file = :file,
-			supplier_id = :supplier_id,
 			updated_at = now()
 		WHERE
 			id = :id
 	`
 	params = map[string]interface{}{
 		"id":   req.GetId(),
-		"cashier_request_number": req.GetCashierRequestNumber(),
-		"term_payment": req.GetTermPayment(),
-		"term_amount": req.GetTermAmount(),
+		"first_name": req.GetFirstName(),
+		"last_name": req.GetLastName(),
+		"birthday": req.GetBirthday(),
+		"balance": req.GetBalance(),
 		"currency": req.GetCurrency(),
+		"phone_number": req.GetPhoneNumber(),
+		"address": req.GetAddress(),
+		"status": req.GetStatus(),
 		"description": req.GetDescription(),
-		"file": req.GetFile(),
-		"supplier_id": req.GetSupplierId(),
 	}
 
 	query, args := helper.ReplaceQueryParams(query, params)
@@ -296,7 +320,7 @@ func (c *CashierRequestRepo) Update(ctx context.Context, req *storehouse_supplie
 	return result.RowsAffected(), nil
 }
 
-func (c *CashierRequestRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error) {
+func (c *ClientRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.UpdatePatch")
 	defer dbSpan.Finish()
@@ -324,7 +348,7 @@ func (c *CashierRequestRepo) UpdatePatch(ctx context.Context, req *models.Update
 
 	query = `
 		UPDATE
-			"cashier_request"
+			"client"
 	` + set + ` , updated_at = now()
 		WHERE
 			id = :id
@@ -340,11 +364,11 @@ func (c *CashierRequestRepo) UpdatePatch(ctx context.Context, req *models.Update
 	return result.RowsAffected(), err
 }
 
-func (c *CashierRequestRepo) Delete(ctx context.Context, req *storehouse_supplier_service.CashierRequestPrimaryKey) error {
+func (c *ClientRepo) Delete(ctx context.Context, req *storehouse_client_service.ClientPrimaryKey) error {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Delete")
 	defer dbSpan.Finish()
 
-	_, err := c.db.Exec(ctx, `DELETE FROM "cashier_request" WHERE id = $1`, req.Id)
+	_, err := c.db.Exec(ctx, `DELETE FROM "client" WHERE id = $1`, req.Id)
 	return err
 }

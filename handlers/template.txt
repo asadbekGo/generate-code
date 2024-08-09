@@ -1,4 +1,4 @@
-package storehouse_supplier_handler
+package client_handler
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"warehouse/warehouse_go_api_gateway/api/status_http"
-	"warehouse/warehouse_go_api_gateway/genproto/storehouse_supplier_service"
+	"warehouse/warehouse_go_api_gateway/genproto/storehouse_client_service"
 	"warehouse/warehouse_go_api_gateway/pkg/util"
 )
 
@@ -20,20 +20,20 @@ import (
 // @Tags Template
 // @Accept json
 // @Produce json
-// @Param Template body storehouse_supplier_service.CreateTemplateRequest true "CreateTemplateRequestBody"
-// @Success 201 {object} status_http.Response{data=storehouse_supplier_service.Template} "Template data"
+// @Param Template body storehouse_client_service.CreateTemplateRequest true "CreateTemplateRequestBody"
+// @Success 201 {object} status_http.Response{data=storehouse_client_service.Template} "Template data"
 // @Response 400 {object} status_http.Response{data=string} "Bad Request"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) CreateTemplate(c *gin.Context) {
 
-	var template storehouse_supplier_service.CreateTemplateRequest
+	var template storehouse_client_service.CreateTemplateRequest
 	err := c.ShouldBindJSON(&template)
 	if err != nil {
 		h.HandleResponse(c, status_http.BadRequest, err.Error())
 		return
 	}
 
-	response, err := h.services.StorehouseSupplierService().Template().CreateTemplate(
+	response, err := h.services.StorehouseClientService().Template().CreateTemplate(
 		context.Background(),
 		&template,
 	)
@@ -55,7 +55,7 @@ func (h *Handler) CreateTemplate(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param template_id path string true "template_id"
-// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.Template} "TemplateBody"
+// @Success 200 {object} status_http.Response{data=storehouse_client_service.Template} "TemplateBody"
 // @Response 400 {object} status_http.Response{data=string} "Invalid Argument"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) GetSingleTemplate(c *gin.Context) {
@@ -66,15 +66,10 @@ func (h *Handler) GetSingleTemplate(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseSupplierService().Template().GetByIDTemplate(
+	response, err := h.services.StorehouseClientService().Template().GetByIDTemplate(
 		context.Background(),
-		&storehouse_supplier_service.TemplatePrimaryKey{Id: templateId},
+		&storehouse_client_service.TemplatePrimaryKey{Id: templateId},
 	)
-	if response == nil {
-		err := errors.New("not Found")
-		h.HandleResponse(c, status_http.NoContent, err.Error())
-		return
-	}
 	if err != nil {
 		h.HandleResponse(c, status_http.GRPCError, err.Error())
 		return
@@ -92,8 +87,8 @@ func (h *Handler) GetSingleTemplate(c *gin.Context) {
 // @Tags Template
 // @Accept json
 // @Produce json
-// @Param filters query storehouse_supplier_service.GetListTemplateRequest true "filters"
-// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.GetListTemplateResponse} "TemplateBody"
+// @Param filters query storehouse_client_service.GetListTemplateRequest true "filters"
+// @Success 200 {object} status_http.Response{data=storehouse_client_service.GetListTemplateResponse} "TemplateBody"
 // @Response 400 {object} status_http.Response{data=string} "Invalid Argument"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) GetTemplateList(c *gin.Context) {
@@ -111,9 +106,9 @@ func (h *Handler) GetTemplateList(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseSupplierService().Template().GetListTemplate(
+	response, err := h.services.StorehouseClientService().Template().GetListTemplate(
 		context.Background(),
-		&storehouse_supplier_service.GetListTemplateRequest{
+		&storehouse_client_service.GetListTemplateRequest{
 			Limit:  int32(limit),
 			Page:   int32(page),
 			Search: c.Query("search"),
@@ -137,20 +132,20 @@ func (h *Handler) GetTemplateList(c *gin.Context) {
 // @Tags Template
 // @Accept json
 // @Produce json
-// @Param Template body storehouse_supplier_service.UpdateTemplateRequest true "UpdateTemplateRequestBody"
-// @Success 200 {object} status_http.Response{data=storehouse_supplier_service.Template} "Template data"
+// @Param Template body storehouse_client_service.UpdateTemplateRequest true "UpdateTemplateRequestBody"
+// @Success 200 {object} status_http.Response{data=storehouse_client_service.Template} "Template data"
 // @Response 400 {object} status_http.Response{data=string} "Bad Request"
 // @Failure 500 {object} status_http.Response{data=string} "Server Error"
 func (h *Handler) UpdateTemplate(c *gin.Context) {
 
-	var updateTemplate storehouse_supplier_service.UpdateTemplateRequest
+	var updateTemplate storehouse_client_service.UpdateTemplateRequest
 	err := c.ShouldBindJSON(&updateTemplate)
 	if err != nil {
 		h.HandleResponse(c, status_http.BadRequest, err.Error())
 		return
 	}
 
-	response, err := h.services.StorehouseSupplierService().Template().UpdateTemplate(
+	response, err := h.services.StorehouseClientService().Template().UpdateTemplate(
 		context.Background(),
 		&updateTemplate,
 	)
@@ -184,9 +179,9 @@ func (h *Handler) DeleteTemplate(c *gin.Context) {
 		return
 	}
 
-	response, err := h.services.StorehouseSupplierService().Template().DeleteTemplate(
+	response, err := h.services.StorehouseClientService().Template().DeleteTemplate(
 		context.Background(),
-		&storehouse_supplier_service.TemplatePrimaryKey{Id: templateId},
+		&storehouse_client_service.TemplatePrimaryKey{Id: templateId},
 	)
 
 	if err != nil {

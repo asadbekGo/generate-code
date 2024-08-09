@@ -1,0 +1,75 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service ClientContractService {
+    rpc CreateClientContract(CreateClientContractRequest) returns (ClientContract) {}
+    rpc GetByIDClientContract(ClientContractPrimaryKey) returns (ClientContract) {}
+    rpc GetListClientContract(GetListClientContractRequest) returns (GetListClientContractResponse) {}
+    rpc UpdateClientContract(UpdateClientContractRequest) returns (ClientContract) {}
+    rpc UpdatePatchClientContract(UpdatePatchClientContractRequest) returns (ClientContract) {}
+    rpc DeleteClientContract(ClientContractPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message ClientContractPrimaryKey {
+    string id = 1;
+}
+
+message ClientContract {
+    string id = 1;
+    string from_date = 2;
+    string to_date = 3;
+    double total_amount = 4;
+    string file = 5;
+    string description = 6;
+    string client_id = 7;
+    string cashier_request_id = 8;
+    string status = 9;
+    string created_at = 10;
+    string updated_at = 11;
+}
+
+message CreateClientContractRequest {
+    string from_date = 1;
+    string to_date = 2;
+    double total_amount = 3;
+    string file = 4;
+    string description = 5;
+    string client_id = 6;
+    string cashier_request_id = 7;
+    string status = 8;
+}
+
+message UpdateClientContractRequest {
+    string id = 1;
+    string from_date = 2;
+    string to_date = 3;
+    double total_amount = 4;
+    string file = 5;
+    string description = 6;
+    string client_id = 7;
+    string cashier_request_id = 8;
+    string status = 9;
+}
+
+message UpdatePatchClientContractRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListClientContractRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListClientContractResponse {
+    int32 count = 1;
+    repeated ClientContract client_contracts = 2;
+}

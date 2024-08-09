@@ -1,14 +1,14 @@
-// CashierRequest ..
-v1.POST("/cashier-request", s.HandlerSupplier.CreateCashierRequest)
-v1.GET("/cashier-request/:cashier_request_id", s.HandlerSupplier.GetSingleCashierRequest)
-v1.GET("/cashier-request", s.HandlerSupplier.GetCashierRequestList)
-v1.PUT("/cashier-request", s.HandlerSupplier.UpdateCashierRequest)
-v1.DELETE("/cashier-request/:cashier_request_id", s.HandlerSupplier.DeleteCashierRequest)
+// Client ..
+v1.POST("/client", s.HandlerClient.CreateClient)
+v1.GET("/client/:client_id", s.HandlerClient.GetSingleClient)
+v1.GET("/client", s.HandlerClient.GetClientList)
+v1.PUT("/client", s.HandlerClient.UpdateClient)
+v1.DELETE("/client/:client_id", s.HandlerClient.DeleteClient)
 
-// CashierRequestProduct ..
-v1.POST("/cashier-request-product", s.HandlerSupplier.CreateCashierRequestProduct)
-v1.GET("/cashier-request-product/:cashier_request_product_id", s.HandlerSupplier.GetSingleCashierRequestProduct)
-v1.GET("/cashier-request-product", s.HandlerSupplier.GetCashierRequestProductList)
-v1.PUT("/cashier-request-product", s.HandlerSupplier.UpdateCashierRequestProduct)
-v1.DELETE("/cashier-request-product/:cashier_request_product_id", s.HandlerSupplier.DeleteCashierRequestProduct)
+// ClientContract ..
+v1.POST("/client-contract", s.HandlerClient.CreateClientContract)
+v1.GET("/client-contract/:client_contract_id", s.HandlerClient.GetSingleClientContract)
+v1.GET("/client-contract", s.HandlerClient.GetClientContractList)
+v1.PUT("/client-contract", s.HandlerClient.UpdateClientContract)
+v1.DELETE("/client-contract/:client_contract_id", s.HandlerClient.DeleteClientContract)
 

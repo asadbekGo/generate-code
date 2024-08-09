@@ -1,4 +1,4 @@
-package supplier_storage
+package client_storage
 
 import (
 	"context"
@@ -10,23 +10,23 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/opentracing/opentracing-go"
 
-	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_supplier_service"
+	"warehouse/warehouse_go_storehouse_service/genproto/storehouse_client_service"
 	"warehouse/warehouse_go_storehouse_service/models"
 	"warehouse/warehouse_go_storehouse_service/pkg/helper"
 	"warehouse/warehouse_go_storehouse_service/storage"
 )
 
-type TenderRepo struct {
+type ClientContractRepo struct {
 	db *pgxpool.Pool
 }
 
-func NewTenderRepo(db *pgxpool.Pool) storage.TenderRepoI {
-	return &TenderRepo{
+func NewClientContractRepo(db *pgxpool.Pool) storage.ClientContractRepoI {
+	return &ClientContractRepo{
 		db: db,
 	}
 }
 
-func (c *TenderRepo) Create(ctx context.Context, req *storehouse_supplier_service.CreateTenderRequest) (resp *storehouse_supplier_service.TenderPrimaryKey, err error) {
+func (c *ClientContractRepo) Create(ctx context.Context, req *storehouse_client_service.CreateClientContractRequest) (resp *storehouse_client_service.ClientContractPrimaryKey, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Create")
 	defer dbSpan.Finish()
@@ -34,23 +34,31 @@ func (c *TenderRepo) Create(ctx context.Context, req *storehouse_supplier_servic
 	var id = uuid.New()
 
 	query := `
-		INSERT INTO "tender" (
+		INSERT INTO "client_contract" (
 			id,
-			name,
-			tender_number,
-			date_time,
+			from_date,
+			to_date,
+			total_amount,
+			file,
+			description,
+			client_id,
+			cashier_request_id,
 			status,
 			updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, now())
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, now())
 	`
 
 	_, err = c.db.Exec(ctx,
 		query,
 		id,
-		req.GetName(),
-		req.GetTenderNumber(),
-		req.GetDateTime(),
+		req.GetFromDate(),
+		req.GetToDate(),
+		req.GetTotalAmount(),
+		req.GetFile(),
+		req.GetDescription(),
+		req.GetClientId(),
+		req.GetCashierRequestId(),
 		req.GetStatus(),
 	)
 
@@ -58,10 +66,10 @@ func (c *TenderRepo) Create(ctx context.Context, req *storehouse_supplier_servic
 		return nil, err
 	}
 
-	return &storehouse_supplier_service.TenderPrimaryKey{Id: id.String()}, nil
+	return &storehouse_client_service.ClientContractPrimaryKey{Id: id.String()}, nil
 }
 
-func (c *TenderRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_service.TenderPrimaryKey) (resp *storehouse_supplier_service.Tender, err error) {
+func (c *ClientContractRepo) GetByPKey(ctx context.Context, req *storehouse_client_service.ClientContractPrimaryKey) (resp *storehouse_client_service.ClientContract, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetByPKey")
 	defer dbSpan.Finish()
@@ -69,21 +77,29 @@ func (c *TenderRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_ser
 	query := `
 		SELECT
 			id,
-			name,
-			tender_number,
-			date_time,
+			from_date,
+			to_date,
+			total_amount,
+			file,
+			description,
+			client_id,
+			cashier_request_id,
 			status,
 			TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS'),
 			TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS')
-		FROM "tender"
+		FROM "client_contract"
 		WHERE id = $1
 	`
 
 	var (
 		id        sql.NullString
-	name sql.NullString
-	tenderNumber sql.NullString
-	dateTime sql.NullString
+	fromDate sql.NullString
+	toDate sql.NullString
+	totalAmount sql.NullString
+	file sql.NullString
+	description sql.NullString
+	clientId sql.NullString
+	cashierRequestId sql.NullString
 	status sql.NullString
 		createdAt sql.NullString
 		updatedAt sql.NullString
@@ -91,9 +107,13 @@ func (c *TenderRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_ser
 
 	err = c.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
-		&name,
-		&tenderNumber,
-		&dateTime,
+		&fromDate,
+		&toDate,
+		&totalAmount,
+		&file,
+		&description,
+		&clientId,
+		&cashierRequestId,
 		&status,
 		&createdAt,
 		&updatedAt,
@@ -103,11 +123,15 @@ func (c *TenderRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_ser
 		return resp, err
 	}
 
-	resp = &storehouse_supplier_service.Tender{
+	resp = &storehouse_client_service.ClientContract{
 		Id:        id.String,
-		Name: name.String,
-		TenderNumber: tenderNumber.String,
-		DateTime: dateTime.String,
+		FromDate: fromDate.String,
+		ToDate: toDate.String,
+		TotalAmount: totalAmount.String,
+		File: file.String,
+		Description: description.String,
+		ClientId: clientId.String,
+		CashierRequestId: cashierRequestId.String,
 		Status: status.String,
 		CreatedAt: createdAt.String,
 		UpdatedAt: updatedAt.String,
@@ -116,12 +140,12 @@ func (c *TenderRepo) GetByPKey(ctx context.Context, req *storehouse_supplier_ser
 	return
 }
 
-func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_service.GetListTenderRequest) (resp *storehouse_supplier_service.GetListTenderResponse, err error) {
+func (c *ClientContractRepo) GetAll(ctx context.Context, req *storehouse_client_service.GetListClientContractRequest) (resp *storehouse_client_service.GetListClientContractResponse, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.GetAll")
 	defer dbSpan.Finish()
 
-	resp = &storehouse_supplier_service.GetListTenderResponse{}
+	resp = &storehouse_client_service.GetListClientContractResponse{}
 
 	var (
 		query  string
@@ -136,13 +160,17 @@ func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_servic
 		SELECT
 			COUNT(*) OVER(),
 			id,
-			name,
-			tender_number,
-			date_time,
+			from_date,
+			to_date,
+			total_amount,
+			file,
+			description,
+			client_id,
+			cashier_request_id,
 			status,
 			TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS'),
 			TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS')
-		FROM "tender"
+		FROM "client_contract"
 	`
 
 	if req.GetLimit() > 0 {
@@ -183,9 +211,13 @@ func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_servic
 	for rows.Next() {
 		var (
 			id        sql.NullString
-	name sql.NullString
-	tenderNumber sql.NullString
-	dateTime sql.NullString
+	fromDate sql.NullString
+	toDate sql.NullString
+	totalAmount sql.NullString
+	file sql.NullString
+	description sql.NullString
+	clientId sql.NullString
+	cashierRequestId sql.NullString
 	status sql.NullString
 			createdAt sql.NullString
 			updatedAt sql.NullString
@@ -194,9 +226,13 @@ func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_servic
 		err := rows.Scan(
 			&resp.Count,
 			&id,
-		&name,
-		&tenderNumber,
-		&dateTime,
+		&fromDate,
+		&toDate,
+		&totalAmount,
+		&file,
+		&description,
+		&clientId,
+		&cashierRequestId,
 		&status,
 			&createdAt,
 			&updatedAt,
@@ -206,11 +242,15 @@ func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_servic
 			return resp, err
 		}
 
-		resp.Tenders = append(resp.Tenders, &storehouse_supplier_service.Tender{
+		resp.ClientContracts = append(resp.ClientContracts, &storehouse_client_service.ClientContract{
 			Id:        id.String,
-		Name: name.String,
-		TenderNumber: tenderNumber.String,
-		DateTime: dateTime.String,
+		FromDate: fromDate.String,
+		ToDate: toDate.String,
+		TotalAmount: totalAmount.String,
+		File: file.String,
+		Description: description.String,
+		ClientId: clientId.String,
+		CashierRequestId: cashierRequestId.String,
 		Status: status.String,
 			CreatedAt: createdAt.String,
 			UpdatedAt: updatedAt.String,
@@ -220,7 +260,7 @@ func (c *TenderRepo) GetAll(ctx context.Context, req *storehouse_supplier_servic
 	return
 }
 
-func (c *TenderRepo) Update(ctx context.Context, req *storehouse_supplier_service.UpdateTenderRequest) (rowsAffected int64, err error) {
+func (c *ClientContractRepo) Update(ctx context.Context, req *storehouse_client_service.UpdateClientContractRequest) (rowsAffected int64, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Update")
 	defer dbSpan.Finish()
@@ -232,11 +272,15 @@ func (c *TenderRepo) Update(ctx context.Context, req *storehouse_supplier_servic
 
 	query = `
 		UPDATE 
-			"tender"
+			"client_contract"
 		SET
-			name = :name,
-			tender_number = :tender_number,
-			date_time = :date_time,
+			from_date = :from_date,
+			to_date = :to_date,
+			total_amount = :total_amount,
+			file = :file,
+			description = :description,
+			client_id = :client_id,
+			cashier_request_id = :cashier_request_id,
 			status = :status,
 			updated_at = now()
 		WHERE
@@ -244,9 +288,13 @@ func (c *TenderRepo) Update(ctx context.Context, req *storehouse_supplier_servic
 	`
 	params = map[string]interface{}{
 		"id":   req.GetId(),
-		"name": req.GetName(),
-		"tender_number": req.GetTenderNumber(),
-		"date_time": req.GetDateTime(),
+		"from_date": req.GetFromDate(),
+		"to_date": req.GetToDate(),
+		"total_amount": req.GetTotalAmount(),
+		"file": req.GetFile(),
+		"description": req.GetDescription(),
+		"client_id": req.GetClientId(),
+		"cashier_request_id": req.GetCashierRequestId(),
 		"status": req.GetStatus(),
 	}
 
@@ -260,7 +308,7 @@ func (c *TenderRepo) Update(ctx context.Context, req *storehouse_supplier_servic
 	return result.RowsAffected(), nil
 }
 
-func (c *TenderRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error) {
+func (c *ClientContractRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error) {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.UpdatePatch")
 	defer dbSpan.Finish()
@@ -288,7 +336,7 @@ func (c *TenderRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchReq
 
 	query = `
 		UPDATE
-			"tender"
+			"client_contract"
 	` + set + ` , updated_at = now()
 		WHERE
 			id = :id
@@ -304,11 +352,11 @@ func (c *TenderRepo) UpdatePatch(ctx context.Context, req *models.UpdatePatchReq
 	return result.RowsAffected(), err
 }
 
-func (c *TenderRepo) Delete(ctx context.Context, req *storehouse_supplier_service.TenderPrimaryKey) error {
+func (c *ClientContractRepo) Delete(ctx context.Context, req *storehouse_client_service.ClientContractPrimaryKey) error {
 
 	dbSpan, ctx := opentracing.StartSpanFromContext(ctx, "storage.Delete")
 	defer dbSpan.Finish()
 
-	_, err := c.db.Exec(ctx, `DELETE FROM "tender" WHERE id = $1`, req.Id)
+	_, err := c.db.Exec(ctx, `DELETE FROM "client_contract" WHERE id = $1`, req.Id)
 	return err
 }

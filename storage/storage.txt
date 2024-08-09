@@ -1,8 +1,8 @@
 type TemplateRepoI interface {
-	Create(ctx context.Context, req *storehouse_supplier_service.CreateTemplateRequest) (resp *storehouse_supplier_service.TemplatePrimaryKey, err error)
-	GetByPKey(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) (resp *storehouse_supplier_service.Template, err error)
-	GetAll(ctx context.Context, req *storehouse_supplier_service.GetListTemplateRequest) (resp *storehouse_supplier_service.GetListTemplateResponse, err error)
-	Update(ctx context.Context, req *storehouse_supplier_service.UpdateTemplateRequest) (rowsAffected int64, err error)
+	Create(ctx context.Context, req *storehouse_client_service.CreateTemplateRequest) (resp *storehouse_client_service.TemplatePrimaryKey, err error)
+	GetByPKey(ctx context.Context, req *storehouse_client_service.TemplatePrimaryKey) (resp *storehouse_client_service.Template, err error)
+	GetAll(ctx context.Context, req *storehouse_client_service.GetListTemplateRequest) (resp *storehouse_client_service.GetListTemplateResponse, err error)
+	Update(ctx context.Context, req *storehouse_client_service.UpdateTemplateRequest) (rowsAffected int64, err error)
 	UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (rowsAffected int64, err error)
-	Delete(ctx context.Context, req *storehouse_supplier_service.TemplatePrimaryKey) error
+	Delete(ctx context.Context, req *storehouse_client_service.TemplatePrimaryKey) error
 }
