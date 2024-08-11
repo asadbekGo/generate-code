@@ -1,0 +1,60 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service CashierRequestComingCommentsService {
+    rpc CreateCashierRequestComingComments(CreateCashierRequestComingCommentsRequest) returns (CashierRequestComingComments) {}
+    rpc GetByIDCashierRequestComingComments(CashierRequestComingCommentsPrimaryKey) returns (CashierRequestComingComments) {}
+    rpc GetListCashierRequestComingComments(GetListCashierRequestComingCommentsRequest) returns (GetListCashierRequestComingCommentsResponse) {}
+    rpc UpdateCashierRequestComingComments(UpdateCashierRequestComingCommentsRequest) returns (CashierRequestComingComments) {}
+    rpc UpdatePatchCashierRequestComingComments(UpdatePatchCashierRequestComingCommentsRequest) returns (CashierRequestComingComments) {}
+    rpc DeleteCashierRequestComingComments(CashierRequestComingCommentsPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CashierRequestComingCommentsPrimaryKey {
+    string id = 1;
+}
+
+message CashierRequestComingComments {
+    string id = 1;
+    string comment = 2;
+    string user_id = 3;
+    string cashier_request_coming_id = 4;
+    string created_at = 5;
+    string updated_at = 6;
+}
+
+message CreateCashierRequestComingCommentsRequest {
+    string comment = 1;
+    string user_id = 2;
+    string cashier_request_coming_id = 3;
+}
+
+message UpdateCashierRequestComingCommentsRequest {
+    string id = 1;
+    string comment = 2;
+    string user_id = 3;
+    string cashier_request_coming_id = 4;
+}
+
+message UpdatePatchCashierRequestComingCommentsRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListCashierRequestComingCommentsRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListCashierRequestComingCommentsResponse {
+    int32 count = 1;
+    repeated CashierRequestComingComments cashier_request_coming_commentss = 2;
+}

@@ -1,0 +1,57 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service ChapterStockUserService {
+    rpc CreateChapterStockUser(CreateChapterStockUserRequest) returns (ChapterStockUser) {}
+    rpc GetByIDChapterStockUser(ChapterStockUserPrimaryKey) returns (ChapterStockUser) {}
+    rpc GetListChapterStockUser(GetListChapterStockUserRequest) returns (GetListChapterStockUserResponse) {}
+    rpc UpdateChapterStockUser(UpdateChapterStockUserRequest) returns (ChapterStockUser) {}
+    rpc UpdatePatchChapterStockUser(UpdatePatchChapterStockUserRequest) returns (ChapterStockUser) {}
+    rpc DeleteChapterStockUser(ChapterStockUserPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message ChapterStockUserPrimaryKey {
+    string id = 1;
+}
+
+message ChapterStockUser {
+    string id = 1;
+    string chapter_stock_id = 2;
+    string user_id = 3;
+    string created_at = 4;
+    string updated_at = 5;
+}
+
+message CreateChapterStockUserRequest {
+    string chapter_stock_id = 1;
+    string user_id = 2;
+}
+
+message UpdateChapterStockUserRequest {
+    string id = 1;
+    string chapter_stock_id = 2;
+    string user_id = 3;
+}
+
+message UpdatePatchChapterStockUserRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListChapterStockUserRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListChapterStockUserResponse {
+    int32 count = 1;
+    repeated ChapterStockUser chapter_stock_users = 2;
+}

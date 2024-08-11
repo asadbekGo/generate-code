@@ -1,29 +1,25 @@
 
-CREATE TABLE IF NOT EXISTS "client" (
-    "id" UUID NOT NULL PRIMARY KEY,
-    "first_name" VARCHAR(255) NOT NULL,
-    "last_name" VARCHAR(255) NOT NULL,
-    "birthday" DATE NOT NULL,
-    "balance" DECIMAL NOT NULL,
+CREATE TABLE IF NOT EXISTS "coming" (
+    "id" UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "quantity" BIGINT NOT NULL DEFAULT 0,
+    "quantity_type" VARCHAR,
+    "size_type" VARCHAR,
+    "size_value" DECIMAL,
+    "weight_type" VARCHAR,
+    "weight_value" DECIMAL,
+    "price" DECIMAL NOT NULL,
+    "total_price" DECIMAL NOT NULL,
     "currency" VARCHAR(255) NOT NULL DEFAULT 'UZS',
-    "phone_number" VARCHAR(255) NOT NULL,
-    "address" VARCHAR(255),
-    "status" status_type DEFAULT 'ACTIVE',
+    "date_time" TIMESTAMP NOT NULL,
+    "client_id" UUID REFERENCES "client"("id"),
+    "client_contract_id" UUID REFERENCES "client_contract"("id"),
+    "product_id" UUID REFERENCES "product"("id"),
+    "cashier_request_coming_id" UUID REFERENCES "cashier_request_coming"("id"),
+    "user_id" UUID NOT NULL REFERENCES "user"("id"),
     "description" TEXT,
-    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS "client_contract" (
-    "id" UUID NOT NULL PRIMARY KEY,
-    "from_date" DATE NOT NULL,
-    "to_date" DATE NOT NULL,
-    "total_amount" DECIMAL NOT NULL,
-    "file" VARCHAR(255),
-    "description" TEXT,
-    "client_id" UUID NOT NULL REFERENCES "client"("id"),
-    "cashier_request_id" UUID NOT NULL REFERENCES "cashier_request"("id"),
-    "status" contract_status DEFAULT 'no_completed',
+    "type" status_transaction NOT NULL DEFAULT 'other',
+    "type_price" VARCHAR(255) NOT NULL DEFAULT '',
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP
 );

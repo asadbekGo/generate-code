@@ -1,0 +1,99 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service CashierRequestComingProductService {
+    rpc CreateCashierRequestComingProduct(CreateCashierRequestComingProductRequest) returns (CashierRequestComingProduct) {}
+    rpc GetByIDCashierRequestComingProduct(CashierRequestComingProductPrimaryKey) returns (CashierRequestComingProduct) {}
+    rpc GetListCashierRequestComingProduct(GetListCashierRequestComingProductRequest) returns (GetListCashierRequestComingProductResponse) {}
+    rpc UpdateCashierRequestComingProduct(UpdateCashierRequestComingProductRequest) returns (CashierRequestComingProduct) {}
+    rpc UpdatePatchCashierRequestComingProduct(UpdatePatchCashierRequestComingProductRequest) returns (CashierRequestComingProduct) {}
+    rpc DeleteCashierRequestComingProduct(CashierRequestComingProductPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CashierRequestComingProductPrimaryKey {
+    string id = 1;
+}
+
+message CashierRequestComingProduct {
+    string id = 1;
+    string date_time = 2;
+    double price = 3;
+    double total_price = 4;
+    string currency = 5;
+    int64 quantity = 6;
+    string quantity_type = 7;
+    string size_type = 8;
+    double size_value = 9;
+    string weight_type = 10;
+    double weight_value = 11;
+    double send_value = 12;
+    string status = 13;
+    string user_id = 14;
+    string product_id = 15;
+    string cashier_request_coming_id = 16;
+    string metrics = 17;
+    string created_at = 18;
+    string updated_at = 19;
+}
+
+message CreateCashierRequestComingProductRequest {
+    string date_time = 1;
+    double price = 2;
+    double total_price = 3;
+    string currency = 4;
+    int64 quantity = 5;
+    string quantity_type = 6;
+    string size_type = 7;
+    double size_value = 8;
+    string weight_type = 9;
+    double weight_value = 10;
+    double send_value = 11;
+    string status = 12;
+    string user_id = 13;
+    string product_id = 14;
+    string cashier_request_coming_id = 15;
+    string metrics = 16;
+}
+
+message UpdateCashierRequestComingProductRequest {
+    string id = 1;
+    string date_time = 2;
+    double price = 3;
+    double total_price = 4;
+    string currency = 5;
+    int64 quantity = 6;
+    string quantity_type = 7;
+    string size_type = 8;
+    double size_value = 9;
+    string weight_type = 10;
+    double weight_value = 11;
+    double send_value = 12;
+    string status = 13;
+    string user_id = 14;
+    string product_id = 15;
+    string cashier_request_coming_id = 16;
+    string metrics = 17;
+}
+
+message UpdatePatchCashierRequestComingProductRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListCashierRequestComingProductRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListCashierRequestComingProductResponse {
+    int32 count = 1;
+    repeated CashierRequestComingProduct cashier_request_coming_products = 2;
+}

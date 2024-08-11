@@ -1,0 +1,108 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service ComingService {
+    rpc CreateComing(CreateComingRequest) returns (Coming) {}
+    rpc GetByIDComing(ComingPrimaryKey) returns (Coming) {}
+    rpc GetListComing(GetListComingRequest) returns (GetListComingResponse) {}
+    rpc UpdateComing(UpdateComingRequest) returns (Coming) {}
+    rpc UpdatePatchComing(UpdatePatchComingRequest) returns (Coming) {}
+    rpc DeleteComing(ComingPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message ComingPrimaryKey {
+    string id = 1;
+}
+
+message Coming {
+    string id = 1;
+    string name = 2;
+    int64 quantity = 3;
+    string quantity_type = 4;
+    string size_type = 5;
+    double size_value = 6;
+    string weight_type = 7;
+    double weight_value = 8;
+    double price = 9;
+    double total_price = 10;
+    string currency = 11;
+    string date_time = 12;
+    string client_id = 13;
+    string client_contract_id = 14;
+    string product_id = 15;
+    string cashier_request_coming_id = 16;
+    string user_id = 17;
+    string description = 18;
+    string type = 19;
+    string type_price = 20;
+    string created_at = 21;
+    string updated_at = 22;
+}
+
+message CreateComingRequest {
+    string name = 1;
+    int64 quantity = 2;
+    string quantity_type = 3;
+    string size_type = 4;
+    double size_value = 5;
+    string weight_type = 6;
+    double weight_value = 7;
+    double price = 8;
+    double total_price = 9;
+    string currency = 10;
+    string date_time = 11;
+    string client_id = 12;
+    string client_contract_id = 13;
+    string product_id = 14;
+    string cashier_request_coming_id = 15;
+    string user_id = 16;
+    string description = 17;
+    string type = 18;
+    string type_price = 19;
+}
+
+message UpdateComingRequest {
+    string id = 1;
+    string name = 2;
+    int64 quantity = 3;
+    string quantity_type = 4;
+    string size_type = 5;
+    double size_value = 6;
+    string weight_type = 7;
+    double weight_value = 8;
+    double price = 9;
+    double total_price = 10;
+    string currency = 11;
+    string date_time = 12;
+    string client_id = 13;
+    string client_contract_id = 14;
+    string product_id = 15;
+    string cashier_request_coming_id = 16;
+    string user_id = 17;
+    string description = 18;
+    string type = 19;
+    string type_price = 20;
+}
+
+message UpdatePatchComingRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListComingRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListComingResponse {
+    int32 count = 1;
+    repeated Coming comings = 2;
+}

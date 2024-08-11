@@ -1,0 +1,84 @@
+syntax="proto3";
+
+package storehouse_client_service;
+option go_package="genproto/storehouse_client_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service CashierRequestComingService {
+    rpc CreateCashierRequestComing(CreateCashierRequestComingRequest) returns (CashierRequestComing) {}
+    rpc GetByIDCashierRequestComing(CashierRequestComingPrimaryKey) returns (CashierRequestComing) {}
+    rpc GetListCashierRequestComing(GetListCashierRequestComingRequest) returns (GetListCashierRequestComingResponse) {}
+    rpc UpdateCashierRequestComing(UpdateCashierRequestComingRequest) returns (CashierRequestComing) {}
+    rpc UpdatePatchCashierRequestComing(UpdatePatchCashierRequestComingRequest) returns (CashierRequestComing) {}
+    rpc DeleteCashierRequestComing(CashierRequestComingPrimaryKey) returns (google.protobuf.Empty) {}
+}
+
+message CashierRequestComingPrimaryKey {
+    string id = 1;
+}
+
+message CashierRequestComing {
+    string id = 1;
+    string date_time = 2;
+    string cashier_request_coming_number = 3;
+    string term_payment = 4;
+    double term_amount = 5;
+    string currency = 6;
+    string description = 7;
+    string file = 8;
+    string client_id = 9;
+    string user_id = 10;
+    string status = 11;
+    string type_price = 12;
+    string created_at = 13;
+    string updated_at = 14;
+}
+
+message CreateCashierRequestComingRequest {
+    string date_time = 1;
+    string cashier_request_coming_number = 2;
+    string term_payment = 3;
+    double term_amount = 4;
+    string currency = 5;
+    string description = 6;
+    string file = 7;
+    string client_id = 8;
+    string user_id = 9;
+    string status = 10;
+    string type_price = 11;
+}
+
+message UpdateCashierRequestComingRequest {
+    string id = 1;
+    string date_time = 2;
+    string cashier_request_coming_number = 3;
+    string term_payment = 4;
+    double term_amount = 5;
+    string currency = 6;
+    string description = 7;
+    string file = 8;
+    string client_id = 9;
+    string user_id = 10;
+    string status = 11;
+    string type_price = 12;
+}
+
+message UpdatePatchCashierRequestComingRequest {
+    string id = 1;
+    google.protobuf.Struct fields = 2;
+}
+
+message GetListCashierRequestComingRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    string search = 3;
+    string where_query = 4;
+    google.protobuf.Struct filters = 5;
+}
+
+message GetListCashierRequestComingResponse {
+    int32 count = 1;
+    repeated CashierRequestComing cashier_request_comings = 2;
+}

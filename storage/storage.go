@@ -66,11 +66,6 @@ func MakeStorage(sqlBody []byte) error {
 		return err
 	}
 
-	for index, field := range fields {
-		var fieldType = strings.Split(field, ":")
-		fields[index] = fieldType[0]
-	}
-
 	var templateGoFilename = "./storage/template_storage.txt"
 	templateGoBody, err := helper.ReadFile(templateGoFilename)
 	if err != nil {
@@ -122,6 +117,11 @@ func generateQuery(tableName string, fields []string) Query {
 	insertValueQuery := "\tVALUES ("
 	var insertExecField, getQuery, updateQuery, updateExecQuery, varNullString, varScan, responseStruct string
 	for ind, field := range fields {
+		var (
+			fieldParse = strings.Split(field, ":")
+			fieldType  = helper.SQLToGoType(fieldParse[1])
+		)
+		field = fieldParse[0]
 
 		if field == "created_at" {
 			continue
@@ -148,9 +148,20 @@ func generateQuery(tableName string, fields []string) Query {
 			insertExecField += fmt.Sprintf("\t\treq.Get%s(),\n", fieldUpperHead)
 			updateQuery += fmt.Sprintf("\t\t\t%s = :%s,\n", field, field)
 			updateExecQuery += "\t\t" + fmt.Sprintf(`"%s": req.Get%s(),`, field, fieldUpperHead) + "\n"
-			varNullString += fmt.Sprintf("\t%s sql.NullString\n", fieldCamelCase)
+
+			switch fieldType {
+			case "double":
+				varNullString += fmt.Sprintf("\t\t%s sql.NullFloat64\n", fieldCamelCase)
+				responseStruct += fmt.Sprintf("\t\t%s: %s.Float64,\n", fieldUpperHead, fieldCamelCase)
+			case "int64":
+				varNullString += fmt.Sprintf("\t\t%s sql.NullInt64\n", fieldCamelCase)
+				responseStruct += fmt.Sprintf("\t\t%s: %s.Int64,\n", fieldUpperHead, fieldCamelCase)
+			default:
+				varNullString += fmt.Sprintf("\t\t%s sql.NullString\n", fieldCamelCase)
+				responseStruct += fmt.Sprintf("\t\t%s: %s.String,\n", fieldUpperHead, fieldCamelCase)
+			}
+
 			varScan += fmt.Sprintf("\t\t&%s,\n", fieldCamelCase)
-			responseStruct += fmt.Sprintf("\t\t%s: %s.String,\n", fieldUpperHead, fieldCamelCase)
 		}
 	}
 	insertQuery += "\t\t)\n" + "\t" + insertValueQuery + "now())"
